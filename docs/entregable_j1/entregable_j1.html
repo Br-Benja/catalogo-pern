@@ -64,6 +64,8 @@
   .shot{ border:2px dashed var(--azul); background:rgba(46,116,181,.05); height:2.0in; display:flex; flex-direction:column; align-items:center; justify-content:center;
     text-align:center; color:var(--azul); font-size:9.8pt; font-weight:700; padding:10px; margin:4px 0 6px; }
   .shot span{ display:block; font-weight:400; color:var(--gris); font-size:8.8pt; margin-top:4px; }
+  .fig{ display:block; width:100%; border:1px solid #222; object-fit:cover; object-position:top; margin:4px 0 4px; background:#fff; }
+  .figs{ display:flex; gap:12px; } .figs > div{ flex:1; }
   .cap{ font-size:9pt; font-style:italic; text-align:center; color:var(--gris); margin:0 0 10px; }
 
   /* Diagrama de flujo */
@@ -245,10 +247,12 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
     <p style="text-align:left">En desarrollo, el proxy de Vite reenvía <code>/api</code> a <code>localhost:3000</code>, así el cliente no necesita conocer la URL de la API. En producción se usará <code>VITE_API_URL</code>.</p>
 
     <h2>1.5 Evidencia: catálogo visible en React</h2>
-    <div class="shot" style="height:1.25in">[ Insertar captura: React en http://localhost:5173 mostrando los 2 productos ]<span>Nombre, precio e imagen de “Audífonos inalámbricos” y “Reloj inteligente”</span></div>
-    <p class="cap">Figura 1. Catálogo con dos productos leídos desde PostgreSQL (CA1).</p>
-    <div class="shot" style="height:0.8in">[ Insertar captura: vista con el mensaje “No hay productos en el catálogo” ]<span>Tras ejecutar backend/db/empty.sql en Neon</span></div>
-    <p class="cap">Figura 2. Estado vacío cuando la tabla no tiene registros (CA2).</p>
+    <div class="figs">
+      <div><img class="fig" style="height:1.95in" src="assets/fig1_react_catalogo.jpg" alt="Catálogo con dos productos">
+        <p class="cap">Figura 1. Catálogo con los dos productos leídos de PostgreSQL en Neon (CA1).</p></div>
+      <div><img class="fig" style="height:1.95in" src="assets/fig2_react_vacio.jpg" alt="Estado vacío">
+        <p class="cap">Figura 2. Estado vacío tras ejecutar <code>empty.sql</code> (CA2).</p></div>
+    </div>
   </div>
   <div class="pnum">5</div>
   <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
@@ -264,19 +268,11 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
     <h2>2.1 Prueba manual con Postman</h2>
     <table>
       <tr><th style="width:9%">Caso</th><th style="width:31%">Petición / precondición</th><th style="width:20%">Esperado</th><th>Resultado</th></tr>
-      <tr><td>P1</td><td><code>GET http://localhost:3000/api/products</code> con 2 productos</td><td>200, <code>data</code> con 2 elementos</td><td class="ok">Pasa</td></tr>
-      <tr><td>P2</td><td>Mismo GET con la tabla vacía (<code>empty.sql</code>)</td><td>200, <code>data: []</code></td><td class="ok">Pasa</td></tr>
+      <tr><td>P1</td><td><code>GET http://localhost:3000/api/products</code> con 2 productos</td><td>200, <code>data</code> con 2 elementos</td><td class="ok">Pasa · 200 OK, 449 ms (Fig. 3)</td></tr>
+      <tr><td>P2</td><td>Mismo GET con la tabla vacía (<code>empty.sql</code>)</td><td>200, <code>data: []</code></td><td class="ok">Pasa · 200 OK con <code>data: []</code> (Fig. 2)</td></tr>
     </table>
-    <p class="file">Respuesta de P1 (cuerpo JSON)</p>
-<pre>{
-  <span class="s">"success"</span>: <span class="k">true</span>,
-  <span class="s">"data"</span>: [
-    { <span class="s">"id"</span>: 2, <span class="s">"name"</span>: <span class="s">"Reloj inteligente"</span>,      <span class="s">"price"</span>: <span class="s">"1499.50"</span>, <span class="s">"image"</span>: <span class="s">"https://..."</span>, ... },
-    { <span class="s">"id"</span>: 1, <span class="s">"name"</span>: <span class="s">"Audífonos inalámbricos"</span>, <span class="s">"price"</span>: <span class="s">"899.00"</span>,  <span class="s">"image"</span>: <span class="s">"https://..."</span>, ... }
-  ]
-}</pre>
-    <div class="shot" style="height:1.35in">[ Insertar captura de Postman: GET /api/products → 200 OK con los dos productos ]<span>Mostrar método, URL, código de estado y cuerpo de la respuesta</span></div>
-    <p class="cap">Figura 3. Verificación manual del endpoint en Postman.</p>
+    <img class="fig" style="height:3.05in; object-position:0 48%" src="assets/fig3_postman.jpg" alt="Postman GET /api/products 200 OK">
+    <p class="cap">Figura 3. GET /api/products en Postman: 200 OK con los dos productos guardados en Neon.</p>
 
     <h2>2.2 Pruebas automatizadas con Jest y Supertest</h2>
     <p>La conexión a Neon se sustituye por un doble de prueba, de modo que las pruebas comprueban la interfaz HTTP sin depender de la red. Se ejecutan con <code>cd backend &amp;&amp; npm test</code>:</p>
@@ -341,17 +337,15 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
   <img class="logo-r" src="assets/logo_itc.png" alt="">
   <div class="content">
     <h1>4. Historia actualizada con evidencia en el tablero</h1>
-    <p>La historia se registró en GitHub Projects y recorrió el flujo <b>Pendiente → Lista para iniciar → En desarrollo → En revisión → Liberada</b>.</p>
+    <p>El tablero <b>Catálogo PERN · Unidad 4</b> (github.com/users/Br-Benja/projects/1) usa el flujo <b>Pendiente → Lista para iniciar → En desarrollo → En revisión → Liberada</b>, con una tarjeta (issue) por historia. HU01 está <b>En revisión</b>: pasará a Liberada cuando otro integrante apruebe el PR #1 y se integre en <code>main</code>.</p>
     <div class="card">
-      <div class="hd"><span>HU01 · Consultar catálogo</span><span class="pill">Liberada</span></div>
+      <div class="hd"><span>HU01 · Consultar catálogo · issue #2</span><span class="pill" style="color:var(--azul)">En revisión</span></div>
       <div class="bd">
         <table style="margin:0 0 8px">
           <tr><td style="width:26%"><b>Responsable</b></td><td>Bautista Rojas Victor Benjamin</td></tr>
           <tr><td><b>Revisor</b></td><td>[Integrante que revisa el PR]</td></tr>
-          <tr><td><b>Equipo</b></td><td>Bautista Rojas V. B. · Herrera Oettinghaus A. · Olvera Álvarez L. M. · Tamayo de la Cruz J. D.</td></tr>
           <tr><td><b>Jornada</b></td><td>1 · Depende de: configuración inicial</td></tr>
-          <tr><td><b>Rama / PR</b></td><td><code>feature/HU01-consultar-catalogo</code> → PR #1 hacia <code>main</code> (github.com/Br-Benja/catalogo-pern/pull/1)</td></tr>
-          <tr><td><b>Etiqueta</b></td><td><code>u4-j1</code> sobre el commit integrado en <code>main</code></td></tr>
+          <tr><td><b>Rama / PR</b></td><td><code>feature/HU01-consultar-catalogo</code> → PR #1 hacia <code>main</code> (cierra el issue #2)</td></tr>
         </table>
         <b>Criterios de aceptación</b>
         <ul class="chk">
@@ -363,16 +357,15 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
           <li>☑ Inicializar backend (Express, dotenv, cors, helmet, morgan) y <code>.env.example</code></li>
           <li>☑ Crear <code>schema.sql</code> y <code>seed.sql</code> y ejecutarlos en Neon</li>
           <li>☑ Implementar ruta y controlador <code>GET /api/products</code></li>
-          <li>☑ Verificar el endpoint en Postman (casos P1 y P2)</li>
-          <li>☑ Inicializar frontend (Vite, React Router, Tailwind, DaisyUI)</li>
-          <li>☑ Store de Zustand + Axios y vista del catálogo con estado vacío</li>
+          <li>☑ Verificar el endpoint en Postman (P1) y con la tabla vacía (P2)</li>
+          <li>☑ Frontend (Vite, Router, Tailwind, DaisyUI), Zustand + Axios y estado vacío</li>
           <li>☑ Pruebas Jest + Supertest (3 casos)</li>
+          <li>☐ Revisión del PR por otro integrante · ☐ Integrar en <code>main</code> y etiquetar <code>u4-j1</code></li>
         </ul>
-        <b>Evidencia enlazada:</b> capturas de Postman (Fig. 3), vista React (Fig. 1 y 2), salida de <code>npm test</code> y commit etiquetado <code>u4-j1</code>.
       </div>
     </div>
-    <div class="shot" style="height:1.7in">[ Insertar captura del tablero de GitHub Projects con HU01 en la columna “Liberada” ]<span>Incluir la tarjeta abierta con responsable, criterios y enlace al PR</span></div>
-    <p class="cap">Figura 4. Tarjeta HU01 liberada en el tablero del equipo.</p>
+    <img class="fig" style="height:2.45in" src="assets/fig4_tablero.jpg" alt="Tablero de GitHub Projects">
+    <p class="cap">Figura 4. Tablero del equipo: HU01 en “En revisión” con el PR #1 enlazado; HU02 a HU05 e INV01 en “Pendiente”.</p>
   </div>
   <div class="pnum">8</div>
   <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
@@ -385,8 +378,8 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
   <img class="logo-r" src="assets/logo_itc.png" alt="">
   <div class="content">
     <h1>5. Resultado de la jornada y siguiente paso</h1>
-    <h2>Incremento liberado</h2>
-    <p>Al cierre de la jornada 1, la rama principal contiene una consulta completa de extremo a extremo: los productos persistidos en PostgreSQL (Neon) se leen desde la API REST de Express y se muestran en React con nombre, precio e imagen. Ambos criterios de aceptación se comprobaron de forma manual con Postman y de forma automatizada con Jest y Supertest.</p>
+    <h2>Incremento de la jornada</h2>
+    <p>Al cierre de la jornada 1, el PR #1 contiene una consulta completa de extremo a extremo, lista para revisión e integración en <code>main</code>: los productos persistidos en PostgreSQL (Neon) se leen desde la API REST de Express y se muestran en React con nombre, precio e imagen. Ambos criterios de aceptación se comprobaron de forma manual con Postman y de forma automatizada con Jest y Supertest.</p>
 
     <h2>Cómo reproducir la demostración</h2>
     <ol>

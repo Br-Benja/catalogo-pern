@@ -18,6 +18,13 @@ En el SQL Editor de Neon ejecuta, en orden:
 
 Para probar el estado vacío: `backend/db/empty.sql`.
 
+También se pueden ejecutar desde la terminal, una vez configurado `backend/.env`:
+```
+cd backend
+node db/run-sql.js db/schema.sql
+node db/run-sql.js db/seed.sql
+```
+
 ## Variables de entorno
 ```
 cd backend
