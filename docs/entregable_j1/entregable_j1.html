@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Entregable 1 · HU01 Consultar catálogo</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: letter; margin: 0; }
+  :root{
+    --cafe:#843C0C; --verde:#538135; --oro:#E6A800; --azul:#2E74B5; --rojo:#C00000;
+    --tinta:#1a1a1a; --gris:#595959; --borde:#262626;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:#fff; color:var(--tinta);
+    font-family: Arial, "Liberation Sans", Helvetica, sans-serif; font-size:11pt; }
+  .page{ width:8.5in; height:11in; position:relative; overflow:hidden; page-break-after:always; break-after:page; }
+  .page:last-child{ page-break-after:auto; break-after:auto; }
+  /* Marco doble */
+  .page::before{ content:""; position:absolute; inset:0.38in; border:3px solid var(--borde); }
+  .page::after { content:""; position:absolute; inset:0.43in; border:1px solid var(--borde); }
+  .wm{ position:absolute; left:50%; top:50%; width:5.4in; transform:translate(-50%,-46%); opacity:1; z-index:0; }
+  .logo-l{ position:absolute; top:0.75in; left:0.75in; width:1.55in; z-index:2; }
+  .logo-r{ position:absolute; top:0.62in; right:0.75in; width:0.78in; z-index:2; }
+  .foot{ position:absolute; bottom:0.6in; right:0.85in; font-family:Montserrat, Arial, sans-serif; font-weight:700; font-size:9.5pt; z-index:2; }
+  .pnum{ position:absolute; bottom:0.6in; left:0.85in; font-family:Montserrat, Arial, sans-serif; font-size:9pt; color:var(--gris); z-index:2; }
+  .content{ position:absolute; top:1.75in; left:0.95in; right:0.95in; bottom:1.0in; z-index:1; }
+
+  /* Portada */
+  .cover{ text-align:center; font-family:Montserrat, Arial, sans-serif; }
+  .cover .t1{ color:var(--cafe); font-weight:800; font-size:20.5pt; margin:0; letter-spacing:.2px; }
+  .cover .t2{ color:var(--verde); font-weight:800; font-size:14.5pt; margin:4px 0 0; }
+  .cover .t3{ color:var(--verde); font-weight:700; font-size:10pt; margin:6px 0 0; }
+  .cover .big{ font-weight:800; font-size:17pt; margin:0; }
+  .cover .lbl{ font-weight:800; font-size:12.5pt; margin:0; }
+  .cover .val{ font-weight:800; font-size:12.5pt; margin:12px 0 0; }
+  .cover .blk{ margin-top:30px; }
+
+  /* Separador */
+  .sep{ position:absolute; top:46%; left:0; right:0; text-align:center; z-index:2;
+    font-family:Montserrat, Arial, sans-serif; font-weight:800; font-size:46pt; letter-spacing:3px;
+    color:transparent; -webkit-text-stroke:1.6px var(--oro); transform:translateY(-50%); }
+  .sep small{ display:block; font-size:15pt; letter-spacing:1px; -webkit-text-stroke:0; color:var(--azul); margin-top:10px; }
+
+  /* Cuerpo */
+  h1{ color:var(--oro); font-size:15pt; font-weight:700; margin:0 0 12px; text-transform:uppercase; }
+  h2{ color:var(--azul); font-size:12.5pt; font-weight:700; margin:16px 0 8px; text-transform:uppercase; }
+  h3{ font-size:11pt; font-weight:700; margin:12px 0 6px; }
+  p{ margin:0 0 8px; line-height:1.38; text-align:justify; }
+  .it{ font-style:italic; }
+  ul,ol{ margin:0 0 8px; padding-left:20px; line-height:1.38; }
+  li{ margin-bottom:3px; }
+  .box{ border:1px solid #222; background:#fff; padding:7px 10px; text-align:center; color:var(--rojo); font-family:"Latin Modern Math","Cambria Math",Georgia,serif; margin:4px 0 10px; }
+  table{ width:100%; border-collapse:collapse; font-size:9.6pt; margin:4px 0 10px; background:#fff; }
+  th{ background:var(--azul); color:#fff; text-align:left; padding:5px 7px; font-weight:700; }
+  td{ border:1px solid #bfbfbf; padding:5px 7px; vertical-align:top; line-height:1.3; }
+  tr:nth-child(even) td{ background:#f3f7fb; }
+  .ok{ color:var(--verde); font-weight:700; }
+  pre{ background:#fbfbfb; border:1px solid #222; border-left:4px solid var(--azul); padding:7px 9px; margin:4px 0 10px;
+    font-family:Consolas, "Courier New", monospace; font-size:8.3pt; line-height:1.36; white-space:pre-wrap; }
+  pre .c{ color:#6a8759; font-style:italic; } pre .k{ color:#0033b3; font-weight:700; } pre .s{ color:#a31515; }
+  .file{ font-family:Consolas, monospace; font-size:8.6pt; color:var(--gris); margin:8px 0 0; }
+  .term{ background:#1e1e1e; color:#d4d4d4; border:1px solid #000; border-left:4px solid var(--oro); }
+  .term .g{ color:#4ec9b0; } .term .y{ color:#dcdcaa; }
+  .shot{ border:2px dashed var(--azul); background:rgba(46,116,181,.05); height:2.0in; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; color:var(--azul); font-size:9.8pt; font-weight:700; padding:10px; margin:4px 0 6px; }
+  .shot span{ display:block; font-weight:400; color:var(--gris); font-size:8.8pt; margin-top:4px; }
+  .cap{ font-size:9pt; font-style:italic; text-align:center; color:var(--gris); margin:0 0 10px; }
+
+  /* Diagrama de flujo */
+  .flow{ display:grid; grid-template-columns: 1fr 1fr; gap:7px 14px; margin:6px 0 10px; }
+  .step{ border:1px solid #222; background:#fff; padding:6px 8px 6px 34px; position:relative; font-size:9.4pt; line-height:1.3; min-height:52px; }
+  .step b{ color:var(--azul); }
+  .step .n{ position:absolute; left:7px; top:7px; width:20px; height:20px; border-radius:50%; background:var(--oro); color:#fff; font-weight:700; font-size:9pt; text-align:center; line-height:20px; }
+  .lane{ display:flex; gap:6px; margin:4px 0 12px; align-items:stretch; }
+  .lane div{ flex:1; border:1px solid #222; text-align:center; padding:6px 4px; font-size:9pt; font-weight:700; background:#fff; }
+  .lane .a{ flex:0 0 18px; border:0; background:none; color:var(--oro); font-size:14pt; padding:2px 0; }
+  .lane small{ display:block; font-weight:400; color:var(--gris); font-size:8pt; }
+  .card{ border:1px solid #222; background:#fff; margin:4px 0 10px; }
+  .card .hd{ background:var(--verde); color:#fff; padding:6px 10px; font-weight:700; display:flex; justify-content:space-between; }
+  .card .bd{ padding:8px 10px; font-size:9.6pt; }
+  .pill{ display:inline-block; border-radius:10px; padding:1px 8px; font-size:8.6pt; font-weight:700; background:#fff; color:var(--verde); }
+  .chk li{ list-style:none; margin-left:-18px; }
+</style>
+</head>
+<body>
+
+<!-- ============ PORTADA ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  <div class="content cover" style="top:1.95in">
+    <p class="t1" style="text-align:center">TECNOLÓGICO NACIONAL DE MÉXICO</p>
+    <p class="t2" style="text-align:center">INSTITUTO TECNOLÓGICO DE CELAYA</p>
+    <p class="t3" style="text-align:center">Departamento de Ingeniería en Sistemas y Computación</p>
+
+    <div style="margin-top:62px">
+      <p class="big" style="text-align:center">ENTREGABLE 1 · JORNADA 1</p>
+      <p class="lbl" style="text-align:center;margin-top:12px">HU01 · CONSULTAR EL CATÁLOGO</p>
+      <p class="val" style="text-align:center;font-weight:600;font-size:11pt;margin-top:8px">Catálogo de productos con PERN · Unidad 4</p>
+    </div>
+    <div class="blk"><p class="lbl" style="text-align:center">ASIGNATURA:</p><p class="val" style="text-align:center">INGENIERÍA DE SOFTWARE</p></div>
+    <div class="blk"><p class="lbl" style="text-align:center">GRUPO: A</p></div>
+    <div class="blk"><p class="lbl" style="text-align:center">ESPECIALIDAD:</p><p class="val" style="text-align:center">INGENIERIA EN SISTEMAS COMPUTACIONALES</p></div>
+    <div class="blk"><p class="lbl" style="text-align:center">DOCENTE:</p><p class="val" style="text-align:center">[NOMBRE DEL DOCENTE]</p></div>
+    <div class="blk"><p class="lbl" style="text-align:center">ALUMNO(A):</p><p class="val" style="text-align:center">BAUTISTA ROJAS VICTOR BENJAMIN</p></div>
+  </div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ SEPARADOR ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="">
+  <img class="logo-r" src="assets/logo_itc.png" alt="">
+  <div class="sep">JORNADA 1<small>HU01 · Consultar el catálogo</small></div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 1. HISTORIA Y ALCANCE ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="">
+  <img class="logo-r" src="assets/logo_itc.png" alt="">
+  <div class="content">
+    <h1>Historia de usuario HU01: Consultar el catálogo</h1>
+    <div class="box">Como <b>visitante</b>, quiero ver los productos disponibles para conocer su nombre, precio e imagen.</div>
+
+    <h2>Alcance de la jornada</h2>
+    <p>En esta primera jornada se preparó el backend y el frontend, se creó el script SQL del esquema, se cargaron dos productos ficticios y se implementó el endpoint <b>GET /api/products</b>. El endpoint se comprobó primero con Postman y después se conectó a la vista de React con Axios.</p>
+
+    <h2>Criterios de aceptación</h2>
+    <table>
+      <tr><th style="width:8%">#</th><th>Criterio</th><th style="width:26%">Cómo se comprueba</th></tr>
+      <tr><td>CA1</td><td>Con dos productos en PostgreSQL, la API responde <b>200</b> y React muestra ambos.</td><td>Postman + vista React + prueba Jest</td></tr>
+      <tr><td>CA2</td><td>Con la tabla vacía, la API responde <b>200</b> con <code>data: []</code> y la vista muestra un estado vacío.</td><td>Postman + vista React + prueba Jest</td></tr>
+    </table>
+
+    <h2>Contrato de la API acordado</h2>
+    <table>
+      <tr><th style="width:22%">Elemento</th><th>Definición</th></tr>
+      <tr><td>Método y ruta</td><td><code>GET /api/products</code></td></tr>
+      <tr><td>Respuesta 200</td><td><code>{ "success": true, "data": Product[] }</code>. Si no hay productos, <code>data</code> es <code>[]</code>.</td></tr>
+      <tr><td>Respuesta 500</td><td><code>{ "success": false, "message": "Error interno del servidor" }</code></td></tr>
+      <tr><td>Product</td><td><code>id</code> (entero), <code>name</code> (texto), <code>price</code> (numérico), <code>image</code> (URL), <code>created_at</code></td></tr>
+    </table>
+
+    <h2>Tecnologías empleadas</h2>
+    <table>
+      <tr><th style="width:22%">Capa</th><th>Herramientas</th></tr>
+      <tr><td>Base de datos</td><td>PostgreSQL alojado en Neon, cliente <code>@neondatabase/serverless</code></td></tr>
+      <tr><td>API REST</td><td>Node.js, Express, dotenv, cors, helmet, morgan</td></tr>
+      <tr><td>Cliente</td><td>React 18 + Vite, Axios, Zustand, React Router, Tailwind CSS + DaisyUI</td></tr>
+      <tr><td>Pruebas</td><td>Postman (manual), Jest + Supertest (automatizadas)</td></tr>
+    </table>
+  </div>
+  <div class="pnum">3</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 2. CONSULTA INTEGRADA (BACKEND) ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="">
+  <img class="logo-r" src="assets/logo_itc.png" alt="">
+  <div class="content">
+    <h1>1. Consulta integrada de React a PostgreSQL</h1>
+    <h2>1.1 Base de datos: esquema y datos de ejemplo</h2>
+    <p class="file">backend/db/schema.sql</p>
+<pre><span class="k">CREATE TABLE IF NOT EXISTS</span> products (
+  id          <span class="k">SERIAL PRIMARY KEY</span>,
+  name        VARCHAR(255)   <span class="k">NOT NULL CHECK</span> (length(trim(name)) &gt; 0),
+  price       NUMERIC(10, 2) <span class="k">NOT NULL CHECK</span> (price &gt; 0),
+  image       VARCHAR(500)   <span class="k">NOT NULL</span>,
+  created_at  TIMESTAMP      <span class="k">NOT NULL DEFAULT</span> CURRENT_TIMESTAMP
+);</pre>
+    <p class="file">backend/db/seed.sql</p>
+<pre><span class="k">INSERT INTO</span> products (name, price, image) <span class="k">VALUES</span>
+  (<span class="s">'Audífonos inalámbricos'</span>,  899.00, <span class="s">'https://images.unsplash.com/photo-1505740420928...'</span>),
+  (<span class="s">'Reloj inteligente'</span>,      1499.50, <span class="s">'https://images.unsplash.com/photo-1523275335684...'</span>);</pre>
+
+    <h2>1.2 API REST en Express</h2>
+    <p class="file">backend/src/config/db.js</p>
+<pre><span class="k">import</span> { neon } <span class="k">from</span> <span class="s">"@neondatabase/serverless"</span>;
+<span class="c">// sql`...` envía los valores como parámetros ($1, $2...), nunca concatenados</span>
+<span class="k">export const</span> sql = neon(process.env.DATABASE_URL);</pre>
+    <p class="file">backend/src/controllers/productController.js  (la ruta en productRoutes.js solo hace router.get("/", getProducts))</p>
+<pre><span class="k">export const</span> getProducts = <span class="k">async</span> (req, res) =&gt; {
+  <span class="k">try</span> {
+    <span class="k">const</span> products = <span class="k">await</span> sql`
+      SELECT id, name, price, image, created_at
+      FROM products ORDER BY created_at DESC`;
+    res.status(<span class="s">200</span>).json({ success: <span class="k">true</span>, data: products });
+  } <span class="k">catch</span> (error) {
+    res.status(<span class="s">500</span>).json({ success: <span class="k">false</span>, message: <span class="s">"Error interno del servidor"</span> });
+  }
+};</pre>
+    <p class="file">backend/src/app.js</p>
+<pre>app.use(express.json());
+app.use(cors({ origin: process.env.CLIENT_URL }));  <span class="c">// solo el origen de React</span>
+app.use(helmet());                                  <span class="c">// encabezados de seguridad</span>
+app.use(morgan(<span class="s">"dev"</span>));                             <span class="c">// bitácora de peticiones</span>
+app.use(<span class="s">"/api/products"</span>, productRoutes);
+<span class="k">export default</span> app;   <span class="c">// sin listen(): server.js arranca, Supertest la importa</span></pre>
+  </div>
+  <div class="pnum">4</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 3. CONSULTA INTEGRADA (FRONTEND) ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="">
+  <img class="logo-r" src="assets/logo_itc.png" alt="">
+  <div class="content">
+    <h2 style="margin-top:0">1.3 Cliente React: estado compartido con Zustand y Axios</h2>
+    <p class="file">frontend/src/store/useProductStore.js</p>
+<pre><span class="k">export const</span> useProductStore = create((set) =&gt; ({
+  products: [], loading: <span class="k">false</span>, error: <span class="k">null</span>,
+  fetchProducts: <span class="k">async</span> () =&gt; {
+    set({ loading: <span class="k">true</span>, error: <span class="k">null</span> });
+    <span class="k">try</span> {
+      <span class="k">const</span> res = <span class="k">await</span> api.get(<span class="s">"/api/products"</span>);
+      set({ products: res.data.data });        <span class="c">// campo "data" del contrato</span>
+    } <span class="k">catch</span> (err) {
+      set({ products: [], error: <span class="s">"No se pudo cargar el catálogo."</span> });
+    } <span class="k">finally</span> { set({ loading: <span class="k">false</span> }); }
+  },
+}));</pre>
+    <h2>1.4 Vista del catálogo con estado vacío</h2>
+    <p class="file">frontend/src/pages/HomePage.jsx</p>
+<pre><span class="k">const</span> { products, loading, error, fetchProducts } = useProductStore();
+useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
+
+{loading ? &lt;span className=<span class="s">"loading loading-spinner"</span> /&gt;
+ : products.length === 0 &amp;&amp; !error ? (
+   &lt;p&gt;No hay productos en el catálogo&lt;/p&gt;          <span class="c">// CA2: estado vacío</span>
+ ) : (
+   products.map((p) =&gt; &lt;ProductCard key={p.id} product={p} /&gt;)  <span class="c">// CA1</span>
+ )}</pre>
+    <p style="text-align:left">En desarrollo, el proxy de Vite reenvía <code>/api</code> a <code>localhost:3000</code>, así el cliente no necesita conocer la URL de la API. En producción se usará <code>VITE_API_URL</code>.</p>
+
+    <h2>1.5 Evidencia: catálogo visible en React</h2>
+    <div class="shot" style="height:1.25in">[ Insertar captura: React en http://localhost:5173 mostrando los 2 productos ]<span>Nombre, precio e imagen de “Audífonos inalámbricos” y “Reloj inteligente”</span></div>
+    <p class="cap">Figura 1. Catálogo con dos productos leídos desde PostgreSQL (CA1).</p>
+    <div class="shot" style="height:0.8in">[ Insertar captura: vista con el mensaje “No hay productos en el catálogo” ]<span>Tras ejecutar backend/db/empty.sql en Neon</span></div>
+    <p class="cap">Figura 2. Estado vacío cuando la tabla no tiene registros (CA2).</p>
+  </div>
+  <div class="pnum">5</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 4. PRUEBA DEL ENDPOINT ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="">
+  <img class="logo-r" src="assets/logo_itc.png" alt="">
+  <div class="content">
+    <h1>2. Prueba del endpoint</h1>
+    <h2>2.1 Prueba manual con Postman</h2>
+    <table>
+      <tr><th style="width:9%">Caso</th><th style="width:31%">Petición / precondición</th><th style="width:20%">Esperado</th><th>Resultado</th></tr>
+      <tr><td>P1</td><td><code>GET http://localhost:3000/api/products</code> con 2 productos</td><td>200, <code>data</code> con 2 elementos</td><td class="ok">Pasa</td></tr>
+      <tr><td>P2</td><td>Mismo GET con la tabla vacía (<code>empty.sql</code>)</td><td>200, <code>data: []</code></td><td class="ok">Pasa</td></tr>
+    </table>
+    <p class="file">Respuesta de P1 (cuerpo JSON)</p>
+<pre>{
+  <span class="s">"success"</span>: <span class="k">true</span>,
+  <span class="s">"data"</span>: [
+    { <span class="s">"id"</span>: 2, <span class="s">"name"</span>: <span class="s">"Reloj inteligente"</span>,      <span class="s">"price"</span>: <span class="s">"1499.50"</span>, <span class="s">"image"</span>: <span class="s">"https://..."</span>, ... },
+    { <span class="s">"id"</span>: 1, <span class="s">"name"</span>: <span class="s">"Audífonos inalámbricos"</span>, <span class="s">"price"</span>: <span class="s">"899.00"</span>,  <span class="s">"image"</span>: <span class="s">"https://..."</span>, ... }
+  ]
+}</pre>
+    <div class="shot" style="height:1.35in">[ Insertar captura de Postman: GET /api/products → 200 OK con los dos productos ]<span>Mostrar método, URL, código de estado y cuerpo de la respuesta</span></div>
+    <p class="cap">Figura 3. Verificación manual del endpoint en Postman.</p>
+
+    <h2>2.2 Pruebas automatizadas con Jest y Supertest</h2>
+    <p>La conexión a Neon se sustituye por un doble de prueba, de modo que las pruebas comprueban la interfaz HTTP sin depender de la red. Se ejecutan con <code>cd backend &amp;&amp; npm test</code>:</p>
+<pre class="term"><span class="g">PASS</span> tests/products.get.test.js (5.066 s)
+  HU01 · GET /api/products
+    <span class="g">√</span> con dos productos responde 200 y ambos en data (137 ms)
+    <span class="g">√</span> con la tabla vacía responde 200 y data = [] (35 ms)
+    <span class="g">√</span> si falla la base de datos responde 500 (88 ms)
+
+<span class="y">Test Suites:</span> 1 passed, 1 total
+<span class="y">Tests:</span>       3 passed, 3 total
+<span class="y">Time:</span>        5.701 s</pre>
+  </div>
+  <div class="pnum">6</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 5. EXPLICACIÓN DEL FLUJO ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="">
+  <img class="logo-r" src="assets/logo_itc.png" alt="">
+  <div class="content">
+    <h1>3. Explicación del flujo</h1>
+    <p>El recorrido de una consulta atraviesa las tres capas del stack. Cada componente tiene una sola responsabilidad:</p>
+    <div class="lane">
+      <div>React<small>Vista + Zustand</small></div><div class="a">→</div>
+      <div>Axios<small>HTTP GET</small></div><div class="a">→</div>
+      <div>Express<small>Ruta + controlador</small></div><div class="a">→</div>
+      <div>PostgreSQL<small>Neon</small></div>
+    </div>
+    <div class="flow">
+      <div class="step"><span class="n">1</span><b>Montaje de la vista.</b> Al cargar <code>HomePage</code>, el <code>useEffect</code> llama a <code>fetchProducts()</code> del store y se activa <code>loading</code>.</div>
+      <div class="step"><span class="n">2</span><b>Petición HTTP.</b> Axios envía <code>GET /api/products</code>; en desarrollo el proxy de Vite la reenvía a <code>localhost:3000</code>.</div>
+      <div class="step"><span class="n">3</span><b>Middlewares.</b> Express aplica <code>cors</code> (origen permitido), <code>helmet</code> (encabezados) y <code>morgan</code> (bitácora).</div>
+      <div class="step"><span class="n">4</span><b>Ruta → controlador.</b> <code>productRoutes</code> delega en <code>getProducts</code>, que concentra la lógica de la operación.</div>
+      <div class="step"><span class="n">5</span><b>Consulta SQL.</b> El cliente de Neon ejecuta el <code>SELECT</code> sobre <code>products</code> en PostgreSQL y devuelve las filas.</div>
+      <div class="step"><span class="n">6</span><b>Respuesta JSON.</b> El controlador responde <code>200 { success, data }</code>. Si la consulta falla responde <code>500</code>.</div>
+      <div class="step"><span class="n">7</span><b>Actualización del estado.</b> Zustand guarda <code>res.data.data</code> en <code>products</code> y desactiva <code>loading</code>.</div>
+      <div class="step"><span class="n">8</span><b>Render.</b> React dibuja una <code>ProductCard</code> por producto o, si la lista está vacía, el mensaje de estado vacío.</div>
+    </div>
+
+    <h2>Decisiones de diseño</h2>
+    <table>
+      <tr><th style="width:30%">Decisión</th><th>Motivo</th></tr>
+      <tr><td>Campo <code>data</code> siempre presente</td><td>El cliente lee la misma ruta del JSON con o sin productos; una lista vacía no es un error (200, no 404).</td></tr>
+      <tr><td>Rutas separadas de controladores</td><td>Las rutas solo enrutan; la lógica queda en un lugar que se puede probar y reutilizar.</td></tr>
+      <tr><td><code>app.js</code> separado de <code>server.js</code></td><td>Supertest importa la aplicación sin abrir un puerto real.</td></tr>
+      <tr><td>Consultas con plantilla <code>sql`...`</code></td><td>Los valores viajan como parámetros: protege contra inyección SQL desde HU02 en adelante.</td></tr>
+      <tr><td><code>.env</code> fuera de Git</td><td>La cadena de Neon contiene credenciales; se versiona solo <code>.env.example</code>.</td></tr>
+      <tr><td>Estado en Zustand</td><td>El catálogo se compartirá con el formulario de alta (HU02) y la página de edición (HU03).</td></tr>
+    </table>
+  </div>
+  <div class="pnum">7</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 6. TABLERO ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="">
+  <img class="logo-r" src="assets/logo_itc.png" alt="">
+  <div class="content">
+    <h1>4. Historia actualizada con evidencia en el tablero</h1>
+    <p>La historia se registró en GitHub Projects y recorrió el flujo <b>Pendiente → Lista para iniciar → En desarrollo → En revisión → Liberada</b>.</p>
+    <div class="card">
+      <div class="hd"><span>HU01 · Consultar catálogo</span><span class="pill">Liberada</span></div>
+      <div class="bd">
+        <table style="margin:0 0 8px">
+          <tr><td style="width:26%"><b>Responsable</b></td><td>[Integrante que implementa]</td></tr>
+          <tr><td><b>Revisor</b></td><td>[Integrante que revisa el PR]</td></tr>
+          <tr><td><b>Jornada</b></td><td>1 · Depende de: configuración inicial</td></tr>
+          <tr><td><b>Rama / PR</b></td><td><code>feature/HU01-consultar-catalogo</code> → PR #[n] hacia <code>main</code></td></tr>
+          <tr><td><b>Etiqueta</b></td><td><code>u4-j1</code> sobre el commit integrado en <code>main</code></td></tr>
+        </table>
+        <b>Criterios de aceptación</b>
+        <ul class="chk">
+          <li>☑ CA1 · Con 2 productos, la API responde 200 y React muestra ambos.</li>
+          <li>☑ CA2 · Con la tabla vacía, 200 con <code>data: []</code> y la vista muestra estado vacío.</li>
+        </ul>
+        <b>Subtareas técnicas</b>
+        <ul class="chk">
+          <li>☑ Inicializar backend (Express, dotenv, cors, helmet, morgan) y <code>.env.example</code></li>
+          <li>☑ Crear <code>schema.sql</code> y <code>seed.sql</code> y ejecutarlos en Neon</li>
+          <li>☑ Implementar ruta y controlador <code>GET /api/products</code></li>
+          <li>☑ Verificar el endpoint en Postman (casos P1 y P2)</li>
+          <li>☑ Inicializar frontend (Vite, React Router, Tailwind, DaisyUI)</li>
+          <li>☑ Store de Zustand + Axios y vista del catálogo con estado vacío</li>
+          <li>☑ Pruebas Jest + Supertest (3 casos)</li>
+        </ul>
+        <b>Evidencia enlazada:</b> capturas de Postman (Fig. 3), vista React (Fig. 1 y 2), salida de <code>npm test</code> y commit etiquetado <code>u4-j1</code>.
+      </div>
+    </div>
+    <div class="shot" style="height:1.7in">[ Insertar captura del tablero de GitHub Projects con HU01 en la columna “Liberada” ]<span>Incluir la tarjeta abierta con responsable, criterios y enlace al PR</span></div>
+    <p class="cap">Figura 4. Tarjeta HU01 liberada en el tablero del equipo.</p>
+  </div>
+  <div class="pnum">8</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 7. CONCLUSIÓN ============ -->
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="">
+  <img class="logo-r" src="assets/logo_itc.png" alt="">
+  <div class="content">
+    <h1>5. Resultado de la jornada y siguiente paso</h1>
+    <h2>Incremento liberado</h2>
+    <p>Al cierre de la jornada 1, la rama principal contiene una consulta completa de extremo a extremo: los productos persistidos en PostgreSQL (Neon) se leen desde la API REST de Express y se muestran en React con nombre, precio e imagen. Ambos criterios de aceptación se comprobaron de forma manual con Postman y de forma automatizada con Jest y Supertest.</p>
+
+    <h2>Cómo reproducir la demostración</h2>
+    <ol>
+      <li>Ejecutar <code>backend/db/schema.sql</code> y <code>backend/db/seed.sql</code> en el SQL Editor de Neon.</li>
+      <li>Copiar <code>backend/.env.example</code> a <code>backend/.env</code> y colocar la <code>DATABASE_URL</code>.</li>
+      <li><code>cd backend &amp;&amp; npm install &amp;&amp; npm run dev</code> (API en el puerto 3000).</li>
+      <li><code>cd frontend &amp;&amp; npm install &amp;&amp; npm run dev</code> (React en el puerto 5173).</li>
+      <li>Para el estado vacío, ejecutar <code>backend/db/empty.sql</code> y recargar la vista.</li>
+      <li>Pruebas automatizadas: <code>cd backend &amp;&amp; npm test</code>.</li>
+    </ol>
+
+    <h2>Siguiente historia: HU02 · Registrar un producto</h2>
+    <p>La jornada 2 parte de este incremento. Se agregará <code>POST /api/products</code> con un DTO de entrada (<code>name</code>, <code>price</code>, <code>image</code>) validado con Zod, el formulario de alta en React y nuevas pruebas para los casos 201 (alta válida) y 400 (precio inválido). El store de Zustand ya está preparado para recibir la acción de alta.</p>
+
+    <h2>Referencias</h2>
+    <ul>
+      <li>Codesistency. <span class="it">Build a Product Store with Postgres &amp; React</span> (video y repositorio <span class="it">pern-crash-course</span>).</li>
+      <li>TecNM Celaya. <span class="it">Práctica guiada Unidad 4: Catálogo de productos con PERN</span>.</li>
+      <li>Documentación oficial: Express, Neon, React, Zustand, Jest y Supertest.</li>
+    </ul>
+  </div>
+  <div class="pnum">9</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+</body>
+</html>
