@@ -337,13 +337,13 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
   <img class="logo-r" src="assets/logo_itc.png" alt="">
   <div class="content">
     <h1>4. Historia actualizada con evidencia en el tablero</h1>
-    <p>El tablero <b>Catálogo PERN · Unidad 4</b> (github.com/users/Br-Benja/projects/1) usa el flujo <b>Pendiente → Lista para iniciar → En desarrollo → En revisión → Liberada</b>, con una tarjeta (issue) por historia. HU01 está <b>En revisión</b>: pasará a Liberada cuando otro integrante apruebe el PR #1 y se integre en <code>main</code>.</p>
+    <p>El tablero <b>Catálogo PERN · Unidad 4</b> (github.com/users/Br-Benja/projects/1) usa el flujo <b>Pendiente → Lista para iniciar → En desarrollo → En revisión → Liberada</b>, con una tarjeta (issue) por historia. HU01 está <b>Liberada</b>: los criterios pasan, Andrés Herrera Oettinghaus aprobó el PR #1 y el cambio se integró en <code>main</code> con la etiqueta <code>u4-j1</code>.</p>
     <div class="card">
-      <div class="hd"><span>HU01 · Consultar catálogo · issue #2</span><span class="pill" style="color:var(--azul)">En revisión</span></div>
+      <div class="hd"><span>HU01 · Consultar catálogo · issue #2</span><span class="pill">Liberada</span></div>
       <div class="bd">
         <table style="margin:0 0 8px">
           <tr><td style="width:26%"><b>Responsable</b></td><td>Bautista Rojas Victor Benjamin</td></tr>
-          <tr><td><b>Revisor</b></td><td>[Integrante que revisa el PR]</td></tr>
+          <tr><td><b>Revisor</b></td><td>Herrera Oettinghaus Andrés · aprobó el PR #1 (“Revisado, cumple CA1 y CA2”)</td></tr>
           <tr><td><b>Jornada</b></td><td>1 · Depende de: configuración inicial</td></tr>
           <tr><td><b>Rama / PR</b></td><td><code>feature/HU01-consultar-catalogo</code> → PR #1 hacia <code>main</code> (cierra el issue #2)</td></tr>
         </table>
@@ -360,12 +360,12 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
           <li>☑ Verificar el endpoint en Postman (P1) y con la tabla vacía (P2)</li>
           <li>☑ Frontend (Vite, Router, Tailwind, DaisyUI), Zustand + Axios y estado vacío</li>
           <li>☑ Pruebas Jest + Supertest (3 casos)</li>
-          <li>☐ Revisión del PR por otro integrante · ☐ Integrar en <code>main</code> y etiquetar <code>u4-j1</code></li>
+          <li>☑ Revisión del PR por otro integrante · ☑ Integrado en <code>main</code> y etiquetado <code>u4-j1</code></li>
         </ul>
       </div>
     </div>
-    <img class="fig" style="height:2.45in" src="assets/fig4_tablero.jpg" alt="Tablero de GitHub Projects">
-    <p class="cap">Figura 4. Tablero del equipo: HU01 en “En revisión” con el PR #1 enlazado; HU02 a HU05 e INV01 en “Pendiente”.</p>
+    <img class="fig" style="height:2.25in" src="assets/fig4_tablero.jpg" alt="Tablero de GitHub Projects">
+    <p class="cap">Figura 4. Tablero del equipo: HU01 en “Liberada” con el PR #1 integrado; HU02 a HU05 e INV01 en “Pendiente”.</p>
   </div>
   <div class="pnum">8</div>
   <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
@@ -378,8 +378,8 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
   <img class="logo-r" src="assets/logo_itc.png" alt="">
   <div class="content">
     <h1>5. Resultado de la jornada y siguiente paso</h1>
-    <h2>Incremento de la jornada</h2>
-    <p>Al cierre de la jornada 1, el PR #1 contiene una consulta completa de extremo a extremo, lista para revisión e integración en <code>main</code>: los productos persistidos en PostgreSQL (Neon) se leen desde la API REST de Express y se muestran en React con nombre, precio e imagen. Ambos criterios de aceptación se comprobaron de forma manual con Postman y de forma automatizada con Jest y Supertest.</p>
+    <h2>Incremento liberado</h2>
+    <p>Al cierre de la jornada 1, la rama principal (etiqueta <code>u4-j1</code>) contiene una consulta completa de extremo a extremo, revisada por Andrés Herrera Oettinghaus: los productos persistidos en PostgreSQL (Neon) se leen desde la API REST de Express y se muestran en React con nombre, precio e imagen. Ambos criterios de aceptación se comprobaron de forma manual con Postman y de forma automatizada con Jest y Supertest.</p>
 
     <h2>Cómo reproducir la demostración</h2>
     <ol>

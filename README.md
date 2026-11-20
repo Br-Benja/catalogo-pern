@@ -5,7 +5,7 @@ PostgreSQL (Neon) + Express + React (Vite) + Node.js.
 ## Estado
 | Jornada | Historia | Estado |
 |---|---|---|
-| 1 | HU01 · Consultar catálogo (`GET /api/products`) | Implementada |
+| 1 | HU01 · Consultar catálogo (`GET /api/products`) | Liberada (`u4-j1`) |
 
 ## Requisitos
 - Node.js 20 o superior
