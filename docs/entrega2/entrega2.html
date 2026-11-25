@@ -469,20 +469,20 @@ res.status(<span class="s">200</span>).json({ success: <span class="k">true</spa
     </div>
     <table>
       <tr><th style="width:12%">Historia</th><th style="width:31%">Rama</th><th style="width:11%">PR</th><th style="width:11%">Issue</th><th style="width:12%">Etiqueta</th><th>Estado</th></tr>
-      <tr><td>HU02</td><td><code>feature/HU02-dar-de-alta</code></td><td>#8</td><td>#3</td><td><code>u4-j2</code></td><td>En revisión</td></tr>
-      <tr><td>HU03</td><td><code>feature/HU03-editar</code></td><td>#9</td><td>#4</td><td><code>u4-j3</code></td><td>En revisión</td></tr>
-      <tr><td>HU04</td><td><code>feature/HU04-eliminar</code></td><td>#10</td><td>#5</td><td><code>u4-j4</code></td><td>En revisión</td></tr>
+      <tr><td>HU02</td><td><code>feature/HU02-dar-de-alta</code></td><td>#8</td><td>#3</td><td><code>u4-j2</code></td><td><span class="ok">Liberada</span></td></tr>
+      <tr><td>HU03</td><td><code>feature/HU03-editar</code></td><td>#9</td><td>#4</td><td><code>u4-j3</code></td><td><span class="ok">Liberada</span></td></tr>
+      <tr><td>HU04</td><td><code>feature/HU04-eliminar</code></td><td>#10</td><td>#5</td><td><code>u4-j4</code></td><td><span class="ok">Liberada</span></td></tr>
     </table>
     <h2>Rutina aplicada en cada historia</h2>
     <ol>
       <li>Tarjeta en <b>En desarrollo</b> y rama <code>feature/HUxx-…</code> desde la anterior.</li>
       <li>Commits vinculados a la historia (<code>feat(HU02): …</code>) con sus pruebas.</li>
       <li>Pull request con criterios de aceptación y <code>Closes #n</code>; tarjeta a <b>En revisión</b>.</li>
-      <li>Otro integrante revisa y aprueba en GitHub.</li>
+      <li>Otro integrante revisa y aprueba en GitHub: <b>Andrés Herrera Oettinghaus</b> aprobó #8, #9 y #10.</li>
       <li>Se integra en <code>main</code>, se etiqueta <code>u4-jN</code> y la tarjeta pasa sola a <b>Liberada</b>.</li>
     </ol>
-    <img class="fig" style="height:2.25in" src="assets/tablero.jpg" alt="Tablero">
-    <p class="cap">Figura 16. Tablero del equipo: HU02, HU03 y HU04 en “En revisión” (PR #8, #9 y #10); HU01 en “Liberada”; HU05 e INV01 en “Pendiente”.</p>
+    <img class="fig" style="height:auto" src="assets/tablero.jpg" alt="Tablero">
+    <p class="cap">Figura 16. Tablero del equipo: HU01, HU02, HU03 y HU04 en “Liberada” con sus PR integrados; HU05 e INV01 en “Pendiente”.</p>
   </div>
 
   <div class="pnum">13</div>
@@ -499,7 +499,7 @@ res.status(<span class="s">200</span>).json({ success: <span class="k">true</spa
   <div class="content">
     <h1>8. Resultado y siguiente paso</h1>
     <h2>Resultado</h2>
-    <p>El catálogo ya tiene el CRUD completo: consultar, dar de alta, editar y eliminar, con los datos en PostgreSQL (Neon). La API rechaza la entrada inválida con mensajes por campo antes de tocar la base, distingue 400, 404 y 500, y la vista de React refleja cada caso sin perder el último dato confirmado. Todos los criterios de HU02, HU03 y HU04 se comprobaron de forma manual (React y Postman) y automatizada (37 pruebas).</p>
+    <p>El catálogo ya tiene el CRUD completo: consultar, dar de alta, editar y eliminar, con los datos en PostgreSQL (Neon). La API rechaza la entrada inválida con mensajes por campo antes de tocar la base, distingue 400, 404 y 500, y la vista de React refleja cada caso sin perder el último dato confirmado. Todos los criterios de HU02, HU03 y HU04 se comprobaron de forma manual (React y Postman) y automatizada (37 pruebas). Andrés Herrera Oettinghaus revisó y aprobó los tres pull requests; se integraron en <code>main</code> en orden y quedaron etiquetados como <code>u4-j2</code>, <code>u4-j3</code> y <code>u4-j4</code>.</p>
     <h2>Cómo reproducir</h2>
     <ol>
       <li>Preparar la base: <code>node db/run-sql.js db/schema.sql</code> y <code>db/seed.sql</code> (desde <code>backend/</code>).</li>

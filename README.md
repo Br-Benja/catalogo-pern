@@ -6,9 +6,9 @@ PostgreSQL (Neon) + Express + React (Vite) + Node.js.
 | Jornada | Historia | Estado |
 |---|---|---|
 | 1 | HU01 · Consultar catálogo | Liberada (`u4-j1`) |
-| 2 | HU02 · Dar de alta | En revisión |
-| 3 | HU03 · Editar | En revisión |
-| 4 | HU04 · Eliminar | En revisión |
+| 2 | HU02 · Dar de alta | Liberada (`u4-j2`) |
+| 3 | HU03 · Editar | Liberada (`u4-j3`) |
+| 4 | HU04 · Eliminar | Liberada (`u4-j4`) |
 
 ## API
 | Método y ruta | Historia | Respuestas |
