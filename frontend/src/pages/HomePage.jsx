@@ -4,9 +4,11 @@ import { useProductStore } from "../store/useProductStore.js";
 import ProductCard from "../components/ProductCard.jsx";
 import AddProductModal, { ADD_MODAL_ID } from "../components/AddProductModal.jsx";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal.jsx";
+import { useIsAdmin } from "../store/useAuthStore.js";
 
 export default function HomePage() {
   const { products, loading, error, fetchProducts } = useProductStore();
+  const isAdmin = useIsAdmin();
 
   useEffect(() => {
     fetchProducts();
@@ -20,10 +22,12 @@ export default function HomePage() {
           <button className="btn btn-ghost btn-circle" onClick={fetchProducts} aria-label="Recargar">
             <RefreshCw className="size-5" />
           </button>
-          <button className="btn btn-primary" onClick={() => document.getElementById(ADD_MODAL_ID)?.showModal()}>
-            <PlusCircle className="size-5" />
-            Agregar producto
-          </button>
+          {isAdmin && (
+            <button className="btn btn-primary" onClick={() => document.getElementById(ADD_MODAL_ID)?.showModal()}>
+              <PlusCircle className="size-5" />
+              Agregar producto
+            </button>
+          )}
         </div>
       </div>
 
@@ -46,8 +50,12 @@ export default function HomePage() {
         </div>
       )}
 
-      <AddProductModal />
-      <ConfirmDeleteModal />
+      {isAdmin && (
+        <>
+          <AddProductModal />
+          <ConfirmDeleteModal />
+        </>
+      )}
     </main>
   );
 }

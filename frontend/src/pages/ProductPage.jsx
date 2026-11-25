@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useProductStore } from "../store/useProductStore.js";
 import ProductForm from "../components/ProductForm.jsx";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal.jsx";
+import { useIsAdmin } from "../store/useAuthStore.js";
 
 const mxn = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" });
 
@@ -15,6 +16,7 @@ export default function ProductPage() {
     editForm, editErrors, saving, setEditForm, fetchProduct, updateProduct, askDelete,
   } = useProductStore();
   const navigate = useNavigate();
+  const isAdmin = useIsAdmin();
   const [saveError, setSaveError] = useState(null);
 
   useEffect(() => {
@@ -73,6 +75,17 @@ export default function ProductPage() {
           </div>
         </section>
 
+        {!isAdmin ? (
+          <section className="card bg-base-100 shadow-md">
+            <div className="card-body justify-center">
+              <h1 className="card-title text-xl">Solo lectura</h1>
+              <p>Para editar o eliminar este producto inicia sesión con una cuenta de administrador.</p>
+              <div className="card-actions">
+                <Link to="/login" className="btn btn-primary btn-sm">Iniciar sesión</Link>
+              </div>
+            </div>
+          </section>
+        ) : (
         <section className="card bg-base-100 shadow-md">
           <div className="card-body">
             <h1 className="card-title text-xl mb-2">Editar producto #{currentProduct.id}</h1>
@@ -95,8 +108,9 @@ export default function ProductPage() {
             </ProductForm>
           </div>
         </section>
+        )}
       </div>
-      <ConfirmDeleteModal onDeleted={() => navigate("/")} />
+      {isAdmin && <ConfirmDeleteModal onDeleted={() => navigate("/")} />}
     </main>
   );
 }

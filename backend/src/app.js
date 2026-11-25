@@ -2,21 +2,52 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import productRoutes from "./routes/productRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
+const isProd = process.env.NODE_ENV === "production";
 const app = express();
 
-app.use(express.json());
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
-app.use(helmet()); // encabezados HTTP de seguridad
-if (process.env.NODE_ENV !== "test") app.use(morgan("dev")); // registra método, ruta y código HTTP
+// En Render la app va detrás de un proxy HTTPS: necesario para cookies "secure" y el límite por IP
+if (isProd) app.set("trust proxy", 1);
 
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173", credentials: true }));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "img-src": ["'self'", "data:", "https:"], // imágenes de productos por URL
+      },
+    },
+  })
+);
+if (process.env.NODE_ENV !== "test") app.use(morgan(isProd ? "tiny" : "dev"));
+
+app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
-// Ruta inexistente
+// API inexistente
+app.use("/api", (req, res) => {
+  res.status(404).json({ success: false, message: "Ruta no encontrada" });
+});
+
+// En producción Express también sirve la compilación de React (HU05)
+if (isProd) {
+  const dist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../frontend/dist");
+  app.use(express.static(dist));
+  app.get("*", (req, res) => res.sendFile(path.join(dist, "index.html")));
+}
+
+// Cualquier otra ruta
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Ruta no encontrada" });
 });
