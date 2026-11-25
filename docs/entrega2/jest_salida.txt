@@ -1,0 +1,51 @@
+PASS tests/products.get.test.js
+  HU01 · GET /api/products
+    √ con dos productos responde 200 y ambos en data (146 ms)
+    √ con la tabla vacía responde 200 y data = [] (38 ms)
+    √ si falla la base de datos responde 500 (35 ms)
+PASS tests/products.delete.test.js
+  HU04 · DELETE /api/products/:id
+    √ confirmar la baja responde 200 con el producto eliminado (149 ms)
+    √ el DELETE es parametrizado con el id (39 ms)
+    √ ID que ya no existe responde 404 (36 ms)
+    √ borrar dos veces el mismo producto: 200 y después 404 (65 ms)
+    √ ID con formato inválido responde 400 y no toca la base (35 ms)
+    √ si falla la base de datos responde 500 (31 ms)
+PASS tests/products.put.test.js
+  HU03 · GET /api/products/:id
+    √ producto existente responde 200 (150 ms)
+    √ ID inexistente responde 404 (38 ms)
+    √ ID con formato inválido (abc) responde 400 (36 ms)
+    √ ID con formato inválido (0) responde 400 (32 ms)
+    √ ID con formato inválido (-3) responde 400 (33 ms)
+    √ ID con formato inválido (1.5) responde 400 (30 ms)
+  HU03 · PUT /api/products/:id
+    √ edición válida responde 200 con los datos guardados (84 ms)
+    √ el UPDATE es parametrizado e incluye el id (33 ms)
+    √ ID inexistente responde 404 (36 ms)
+    √ datos inválidos responden 400 y no se actualiza (36 ms)
+    √ formulario incompleto responde 400 (PUT exige todos los campos) (30 ms)
+    √ ID con formato inválido responde 400 (29 ms)
+    √ si falla la base de datos responde 500 (30 ms)
+PASS tests/products.post.test.js (5.025 s)
+  HU02 · POST /api/products
+    √ alta válida responde 201 y devuelve el producto creado (227 ms)
+    √ usa consulta parametrizada y guarda el nombre sin espacios (43 ms)
+    √ acepta el precio como texto numérico (42 ms)
+    √ precio negativo responde 400 y no crea registro (42 ms)
+    √ precio cero responde 400 y no crea registro (43 ms)
+    √ precio texto responde 400 y no crea registro (47 ms)
+    √ precio vacío responde 400 y no crea registro (41 ms)
+    √ precio nulo responde 400 y no crea registro (42 ms)
+    √ nombre con solo espacios responde 400 (41 ms)
+    √ imagen no-es-url responde 400 (37 ms)
+    √ imagen ftp://example.com/a.jpg responde 400 (37 ms)
+    √ campos faltantes responden 400 con el detalle de cada uno (30 ms)
+    √ campos fuera del DTO responden 400 (37 ms)
+    √ JSON mal formado responde 400 (61 ms)
+    √ si falla la base de datos responde 500 (39 ms)
+Test Suites: 4 passed, 4 total
+Tests:       37 passed, 37 total
+Snapshots:   0 total
+Time:        6.949 s, estimated 7 s
+Ran all test suites.
