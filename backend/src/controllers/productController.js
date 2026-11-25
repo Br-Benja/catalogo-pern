@@ -1,6 +1,8 @@
 import { sql } from "../config/db.js";
 import { toProductDTO } from "../dto/productDto.js";
 
+const notFound = (res) => res.status(404).json({ success: false, message: "Producto no encontrado" });
+
 const serverError = (res, where, error) => {
   console.error(`Error en ${where}:`, error.message);
   res.status(500).json({ success: false, message: "Error interno del servidor" });
@@ -34,5 +36,39 @@ export const createProduct = async (req, res) => {
     res.status(201).json({ success: true, data: toProductDTO(product) });
   } catch (error) {
     serverError(res, "createProduct", error);
+  }
+};
+
+// GET /api/products/:id  → HU03 (cargar el producto en la pantalla de edición)
+export const getProduct = async (req, res) => {
+  const { id } = req.validated.params;
+  try {
+    const [product] = await sql`
+      SELECT id, name, price, image, created_at
+      FROM products
+      WHERE id = ${id}
+    `;
+    if (!product) return notFound(res);
+    res.status(200).json({ success: true, data: toProductDTO(product) });
+  } catch (error) {
+    serverError(res, "getProduct", error);
+  }
+};
+
+// PUT /api/products/:id  → HU03 Editar (se guarda el formulario completo)
+export const updateProduct = async (req, res) => {
+  const { id } = req.validated.params;
+  const { name, price, image } = req.validated.body;
+  try {
+    const [product] = await sql`
+      UPDATE products
+      SET name = ${name}, price = ${price}, image = ${image}
+      WHERE id = ${id}
+      RETURNING id, name, price, image, created_at
+    `;
+    if (!product) return notFound(res);
+    res.status(200).json({ success: true, data: toProductDTO(product) });
+  } catch (error) {
+    serverError(res, "updateProduct", error);
   }
 };
