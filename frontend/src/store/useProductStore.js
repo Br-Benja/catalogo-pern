@@ -14,7 +14,15 @@ export const useProductStore = create((set, get) => ({
   formErrors: {},
   submitting: false,
 
-  setFormData: (formData) => set({ formData }),
+  // Al escribir en un campo se borra su error anterior
+  setFormData: (formData) =>
+    set((state) => {
+      const formErrors = { ...state.formErrors };
+      for (const key of Object.keys(formData)) {
+        if (formData[key] !== state.formData[key]) delete formErrors[key];
+      }
+      return { formData, formErrors };
+    }),
   resetForm: () => set({ formData: { ...emptyForm }, formErrors: {} }),
 
   fetchProducts: async () => {
