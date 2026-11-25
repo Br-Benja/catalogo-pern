@@ -4,7 +4,7 @@ import { toProductDTO } from "../dto/productDto.js";
 const notFound = (res) => res.status(404).json({ success: false, message: "Producto no encontrado" });
 
 const serverError = (res, where, error) => {
-  console.error(`Error en ${where}:`, error.message);
+  if (process.env.NODE_ENV !== "test") console.error(`Error en ${where}:`, error.message);
   res.status(500).json({ success: false, message: "Error interno del servidor" });
 };
 
