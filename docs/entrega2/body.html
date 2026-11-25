@@ -98,7 +98,7 @@ router.delete(<span class="s">"/:id"</span>, validate(idParamSchema, <span class
       <tr><td>PostgreSQL</td><td><code>CHECK (price &gt; 0)</code> y <code>CHECK (length(trim(name)) &gt; 0)</code> del esquema: última barrera si algo saltara la API.</td></tr>
       <tr><td>Consultas parametrizadas</td><td>Los valores viajan como <code>$1, $2…</code> en <code>sql`...`</code>; las pruebas verifican que nunca se concatenan.</td></tr>
     </table>
-    <p>El formulario de React usa <code>noValidate</code> a propósito: la fuente de verdad es la API y la vista muestra sus mensajes debajo de cada campo (Fig. 1).</p>
+    <p>El formulario de React usa <code>noValidate</code> a propósito: la fuente de verdad es la API y la vista muestra sus mensajes debajo de cada campo (ver HU02).</p>
   </div>
 </section>
 
@@ -109,8 +109,8 @@ router.delete(<span class="s">"/:id"</span>, validate(idParamSchema, <span class
     <div class="box">Como <b>responsable del catálogo</b>, quiero registrar un producto para que aparezca en la lista.</div>
     <table>
       <tr><th style="width:62%">Criterio de aceptación</th><th>Evidencia</th><th style="width:12%">Estado</th></tr>
-      <tr><td>Una alta válida responde 201, aparece en la lista y persiste al recargar</td><td>Fig. 2 y 3 · prueba “alta válida”</td><td class="ok">Cumple</td></tr>
-      <tr><td>Un precio inválido enviado desde Postman responde 400 y no crea un registro</td><td>Fig. 4 · 5 pruebas de precio</td><td class="ok">Cumple</td></tr>
+      <tr><td>Una alta válida responde 201, aparece en la lista y persiste al recargar</td><td>React (alta y recarga) · Postman 201</td><td class="ok">Cumple</td></tr>
+      <tr><td>Un precio inválido enviado desde Postman responde 400 y no crea un registro</td><td>Postman 400 · 5 pruebas de precio</td><td class="ok">Cumple</td></tr>
     </table>
 <pre><span class="k">const</span> [product] = <span class="k">await</span> sql`
   INSERT INTO products (name, price, image)
@@ -119,9 +119,9 @@ router.delete(<span class="s">"/:id"</span>, validate(idParamSchema, <span class
 res.status(<span class="s">201</span>).json({ success: <span class="k">true</span>, data: toProductDTO(product) });</pre>
     <div class="figs">
       <div><img class="fig" style="height:2.95in" src="assets/hu02_react_errores.jpg" alt="">
-        <p class="cap">Figura 1. Datos inválidos: la API responde 400 y React muestra el error de cada campo.</p></div>
+        <p class="cap">Datos inválidos: la API responde 400 y React muestra el error de cada campo.</p></div>
       <div><img class="fig" style="height:2.95in" src="assets/hu02_react_alta.jpg" alt="">
-        <p class="cap">Figura 2. Tras registrar y <b>recargar</b>, “Teclado mecánico RGB” sigue en el catálogo.</p></div>
+        <p class="cap">Tras registrar y <b>recargar</b>, “Teclado mecánico RGB” sigue en el catálogo.</p></div>
     </div>
   </div>
 </section>
@@ -130,9 +130,9 @@ res.status(<span class="s">201</span>).json({ success: <span class="k">true</spa
   <div class="content">
     <h2 style="margin-top:0">HU02 · Prueba manual en Postman</h2>
     <div class="crop crop-tall"><img src="assets/pm_post_201.jpg" alt=""></div>
-    <p class="cap">Figura 3. <code>POST /api/products</code> → <b>201 Created</b>. El nombre se envió con espacios y se guardó limpio.</p>
+    <p class="cap"><code>POST /api/products</code> → <b>201 Created</b>. El nombre se envió con espacios y se guardó limpio.</p>
     <div class="crop crop-short"><img src="assets/pm_post_400.jpg" alt=""></div>
-    <p class="cap">Figura 4. Precio −50 → <b>400 Bad Request</b> con <code>errors.price</code>; no se creó ningún registro.</p>
+    <p class="cap">Precio −50 → <b>400 Bad Request</b> con <code>errors.price</code>; no se creó ningún registro.</p>
   </div>
 </section>
 
@@ -143,9 +143,9 @@ res.status(<span class="s">201</span>).json({ success: <span class="k">true</spa
     <div class="box">Como <b>responsable del catálogo</b>, quiero cambiar los datos de un producto para mantener la información vigente.</div>
     <table>
       <tr><th style="width:62%">Criterio de aceptación</th><th>Evidencia</th><th style="width:12%">Estado</th></tr>
-      <tr><td>Una edición válida responde 200 y el cambio persiste al recargar</td><td>Fig. 5, 7 y 9</td><td class="ok">Cumple</td></tr>
-      <tr><td>Un ID inexistente recibe 404</td><td>Fig. 8 y 10 · 2 pruebas</td><td class="ok">Cumple</td></tr>
-      <tr><td>Si falla la edición, la vista muestra el error y conserva el último dato confirmado</td><td>Fig. 6 y 7</td><td class="ok">Cumple</td></tr>
+      <tr><td>Una edición válida responde 200 y el cambio persiste al recargar</td><td>React (edición y recarga) · Postman 200</td><td class="ok">Cumple</td></tr>
+      <tr><td>Un ID inexistente recibe 404</td><td>React “no encontrado” · Postman 404</td><td class="ok">Cumple</td></tr>
+      <tr><td>Si falla la edición, la vista muestra el error y conserva el último dato confirmado</td><td>React (error y catálogo)</td><td class="ok">Cumple</td></tr>
     </table>
     <p class="file">frontend/src/store/useProductStore.js · updateProduct</p>
 <pre><span class="k">try</span> {
@@ -159,9 +159,9 @@ res.status(<span class="s">201</span>).json({ success: <span class="k">true</spa
 }</pre>
     <div class="figs">
       <div><img class="fig" style="height:2.15in" src="assets/hu03_react_editado.jpg" alt="">
-        <p class="cap">Figura 5. Edición válida: “Cambios guardados” y la tarjeta izquierda se actualiza.</p></div>
+        <p class="cap">Edición válida: “Cambios guardados” y la tarjeta izquierda se actualiza.</p></div>
       <div><img class="fig" style="height:2.15in" src="assets/hu03_react_error.jpg" alt="">
-        <p class="cap">Figura 6. Precio 0 → error; la tarjeta conserva “RGB Pro · $1,499.00”.</p></div>
+        <p class="cap">Precio 0 → error; la tarjeta conserva “RGB Pro · $1,499.00”.</p></div>
     </div>
   </div>
 </section>
@@ -170,9 +170,9 @@ res.status(<span class="s">201</span>).json({ success: <span class="k">true</spa
   <div class="content">
     <h2 style="margin-top:0">HU03 · Persistencia y producto inexistente</h2>
     <img class="fig" style="height:3.6in" src="assets/hu03_react_catalogo.jpg" alt="">
-    <p class="cap">Figura 7. Catálogo después de <b>recargar</b>: queda la edición válida (RGB Pro, $1,499.00) y no la fallida (“Teclado edición fallida”, $0), que nunca llegó a la base.</p>
+    <p class="cap">Catálogo después de <b>recargar</b>: queda la edición válida (RGB Pro, $1,499.00) y no la fallida (“Teclado edición fallida”, $0), que nunca llegó a la base.</p>
     <img class="fig" style="height:1.25in" src="assets/hu03_react_404.jpg" alt="">
-    <p class="cap">Figura 8. <code>/product/999</code>: la API responde 404 y la vista muestra “Producto no encontrado” con la opción de volver al catálogo.</p>
+    <p class="cap"><code>/product/999</code>: la API responde 404 y la vista muestra “Producto no encontrado” con la opción de volver al catálogo.</p>
     <p>La pantalla de edición separa el <b>último dato confirmado</b> (tarjeta izquierda, <code>currentProduct</code>) de lo que el usuario escribe (<code>editForm</code>). Mientras la API no responda 200, ni la tarjeta ni el catálogo cambian, aunque el formulario tenga otros valores.</p>
   </div>
 </section>
@@ -181,9 +181,9 @@ res.status(<span class="s">201</span>).json({ success: <span class="k">true</spa
   <div class="content">
     <h2 style="margin-top:0">HU03 · Prueba manual en Postman</h2>
     <div class="crop crop-tall"><img src="assets/pm_put_200.jpg" alt=""></div>
-    <p class="cap">Figura 9. <code>PUT /api/products/5</code> con el formulario completo → <b>200 OK</b>.</p>
+    <p class="cap"><code>PUT /api/products/5</code> con el formulario completo → <b>200 OK</b>.</p>
     <div class="crop crop-short"><img src="assets/pm_put_404.jpg" alt=""></div>
-    <p class="cap">Figura 10. <code>PUT /api/products/9999</code> → <b>404 Not Found</b>.</p>
+    <p class="cap"><code>PUT /api/products/9999</code> → <b>404 Not Found</b>.</p>
   </div>
 </section>
 
@@ -194,22 +194,22 @@ res.status(<span class="s">201</span>).json({ success: <span class="k">true</spa
     <div class="box">Como <b>responsable del catálogo</b>, quiero retirar un producto para que deje de aparecer.</div>
     <table>
       <tr><th style="width:62%">Criterio de aceptación</th><th>Evidencia</th><th style="width:12%">Estado</th></tr>
-      <tr><td>Cancelar conserva el producto</td><td>Fig. 11 y 12</td><td class="ok">Cumple</td></tr>
-      <tr><td>Confirmar devuelve 200 y lo retira de la lista, también después de recargar</td><td>Fig. 13 y 14</td><td class="ok">Cumple</td></tr>
-      <tr><td>Si el ID ya no existe, la API devuelve 404</td><td>Fig. 15 · prueba automatizada</td><td class="ok">Cumple</td></tr>
+      <tr><td>Cancelar conserva el producto</td><td>React (confirmar y cancelar)</td><td class="ok">Cumple</td></tr>
+      <tr><td>Confirmar devuelve 200 y lo retira de la lista, también después de recargar</td><td>React (eliminado) · Postman 200</td><td class="ok">Cumple</td></tr>
+      <tr><td>Si el ID ya no existe, la API devuelve 404</td><td>Postman 404 · prueba automatizada</td><td class="ok">Cumple</td></tr>
     </table>
 <pre><span class="k">const</span> [product] = <span class="k">await</span> sql`DELETE FROM products WHERE id = ${id} RETURNING ...`;
 <span class="k">if</span> (!product) <span class="k">return</span> notFound(res);           <span class="c">// 404: no había nada que borrar</span>
 res.status(<span class="s">200</span>).json({ success: <span class="k">true</span>, data: toProductDTO(product) });</pre>
     <div class="figs">
       <div><img class="fig" style="height:2.05in" src="assets/hu04_react_confirmar.jpg" alt="">
-        <p class="cap">Figura 11. Confirmación antes de eliminar “Mouse inalámbrico”.</p></div>
+        <p class="cap">Confirmación antes de eliminar “Mouse inalámbrico”.</p></div>
       <div><img class="fig" style="height:2.05in" src="assets/hu04_react_cancelado.jpg" alt="">
-        <p class="cap">Figura 12. Con <b>Cancelar</b> no se envía petición y el producto sigue.</p></div>
+        <p class="cap">Con <b>Cancelar</b> no se envía petición y el producto sigue.</p></div>
     </div>
     <div class="figs">
       <div style="flex:0 0 49%"><img class="fig" style="height:2.05in" src="assets/hu04_react_eliminado.jpg" alt="">
-        <p class="cap">Figura 13. Con <b>Eliminar</b>: “Mouse inalámbrico eliminado” y sale de la lista.</p></div>
+        <p class="cap">Con <b>Eliminar</b>: “Mouse inalámbrico eliminado” y sale de la lista.</p></div>
       <div><p class="cap" style="text-align:left;margin-top:24px">Después de recargar, <code>GET /api/products/4</code> respondió <b>404</b>: el producto ya no existe en PostgreSQL.</p></div>
     </div>
   </div>
@@ -219,9 +219,9 @@ res.status(<span class="s">200</span>).json({ success: <span class="k">true</spa
   <div class="content">
     <h2 style="margin-top:0">HU04 · Prueba manual en Postman</h2>
     <div class="crop crop-tall"><img src="assets/pm_delete_200.jpg" alt=""></div>
-    <p class="cap">Figura 14. <code>DELETE /api/products/5</code> → <b>200 OK</b> con el producto eliminado.</p>
+    <p class="cap"><code>DELETE /api/products/5</code> → <b>200 OK</b> con el producto eliminado.</p>
     <div class="crop crop-short"><img src="assets/pm_delete_404.jpg" alt=""></div>
-    <p class="cap">Figura 15. El mismo DELETE otra vez → <b>404 Not Found</b>: el ID ya no existe.</p>
+    <p class="cap">El mismo DELETE otra vez → <b>404 Not Found</b>: el ID ya no existe.</p>
   </div>
 </section>
 
@@ -287,7 +287,7 @@ res.status(<span class="s">200</span>).json({ success: <span class="k">true</spa
       <li>Se integra en <code>main</code>, se etiqueta <code>u4-jN</code> y la tarjeta pasa sola a <b>Liberada</b>.</li>
     </ol>
     <img class="fig" style="height:auto" src="assets/tablero.jpg" alt="Tablero">
-    <p class="cap">Figura 16. {{CAP_TABLERO}}</p>
+    <p class="cap">{{CAP_TABLERO}}</p>
   </div>
 </section>
 

@@ -249,9 +249,9 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
     <h2>1.5 Evidencia: catálogo visible en React</h2>
     <div class="figs">
       <div><img class="fig" style="height:1.95in" src="assets/fig1_react_catalogo.jpg" alt="Catálogo con dos productos">
-        <p class="cap">Figura 1. Catálogo con los dos productos leídos de PostgreSQL en Neon (CA1).</p></div>
+        <p class="cap">Catálogo con los dos productos leídos de PostgreSQL en Neon (CA1).</p></div>
       <div><img class="fig" style="height:1.95in" src="assets/fig2_react_vacio.jpg" alt="Estado vacío">
-        <p class="cap">Figura 2. Estado vacío tras ejecutar <code>empty.sql</code> (CA2).</p></div>
+        <p class="cap">Estado vacío tras ejecutar <code>empty.sql</code> (CA2).</p></div>
     </div>
   </div>
   <div class="pnum">5</div>
@@ -268,11 +268,11 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
     <h2>2.1 Prueba manual con Postman</h2>
     <table>
       <tr><th style="width:9%">Caso</th><th style="width:31%">Petición / precondición</th><th style="width:20%">Esperado</th><th>Resultado</th></tr>
-      <tr><td>P1</td><td><code>GET http://localhost:3000/api/products</code> con 2 productos</td><td>200, <code>data</code> con 2 elementos</td><td class="ok">Pasa · 200 OK, 449 ms (Fig. 3)</td></tr>
-      <tr><td>P2</td><td>Mismo GET con la tabla vacía (<code>empty.sql</code>)</td><td>200, <code>data: []</code></td><td class="ok">Pasa · 200 OK con <code>data: []</code> (Fig. 2)</td></tr>
+      <tr><td>P1</td><td><code>GET http://localhost:3000/api/products</code> con 2 productos</td><td>200, <code>data</code> con 2 elementos</td><td class="ok">Pasa · 200 OK, 449 ms</td></tr>
+      <tr><td>P2</td><td>Mismo GET con la tabla vacía (<code>empty.sql</code>)</td><td>200, <code>data: []</code></td><td class="ok">Pasa · 200 OK con <code>data: []</code> (vista de catálogo vacío)</td></tr>
     </table>
     <img class="fig" style="height:3.05in; object-position:0 48%" src="assets/fig3_postman.jpg" alt="Postman GET /api/products 200 OK">
-    <p class="cap">Figura 3. GET /api/products en Postman: 200 OK con los dos productos guardados en Neon.</p>
+    <p class="cap">GET /api/products en Postman: 200 OK con los dos productos guardados en Neon.</p>
 
     <h2>2.2 Pruebas automatizadas con Jest y Supertest</h2>
     <p>La conexión a Neon se sustituye por un doble de prueba, de modo que las pruebas comprueban la interfaz HTTP sin depender de la red. Se ejecutan con <code>cd backend &amp;&amp; npm test</code>:</p>
@@ -365,7 +365,7 @@ useEffect(() =&gt; { fetchProducts(); }, [fetchProducts]);
       </div>
     </div>
     <img class="fig" style="height:2.25in" src="assets/fig4_tablero.jpg" alt="Tablero de GitHub Projects">
-    <p class="cap">Figura 4. Tablero del equipo: HU01 en “Liberada” con el PR #1 integrado; HU02 a HU05 e INV01 en “Pendiente”.</p>
+    <p class="cap">Tablero del equipo: HU01 en “Liberada” con el PR #1 integrado; HU02 a HU05 e INV01 en “Pendiente”.</p>
   </div>
   <div class="pnum">8</div>
   <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
