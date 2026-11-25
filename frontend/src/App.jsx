@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar.jsx";
 import HomePage from "./pages/HomePage.jsx";
 
@@ -9,6 +10,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
       </Routes>
+      <Toaster position="bottom-right" />
     </div>
   );
 }
