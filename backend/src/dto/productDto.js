@@ -32,6 +32,18 @@ export const productInputSchema = z
   })
   .strict();
 
+/** Parámetro :id de la ruta: entero positivo */
+export const idParamSchema = z.object({
+  id: z.preprocess(
+    toNumber,
+    z
+      .number({ invalid_type_error: "El id debe ser un número entero positivo" })
+      .int("El id debe ser un número entero positivo")
+      .positive("El id debe ser un número entero positivo")
+      .max(2147483647, "El id está fuera de rango")
+  ),
+});
+
 /** DTO de salida: forma en que la API devuelve un producto */
 export const toProductDTO = (row) => ({
   id: row.id,
