@@ -3,6 +3,7 @@ import { PlusCircle, RefreshCw } from "lucide-react";
 import { useProductStore } from "../store/useProductStore.js";
 import ProductCard from "../components/ProductCard.jsx";
 import AddProductModal, { ADD_MODAL_ID } from "../components/AddProductModal.jsx";
+import ConfirmDeleteModal from "../components/ConfirmDeleteModal.jsx";
 
 export default function HomePage() {
   const { products, loading, error, fetchProducts } = useProductStore();
@@ -46,6 +47,7 @@ export default function HomePage() {
       )}
 
       <AddProductModal />
+      <ConfirmDeleteModal />
     </main>
   );
 }

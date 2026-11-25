@@ -4,7 +4,7 @@ import { toProductDTO } from "../dto/productDto.js";
 const notFound = (res) => res.status(404).json({ success: false, message: "Producto no encontrado" });
 
 const serverError = (res, where, error) => {
-  console.error(`Error en ${where}:`, error.message);
+  if (process.env.NODE_ENV !== "test") console.error(`Error en ${where}:`, error.message);
   res.status(500).json({ success: false, message: "Error interno del servidor" });
 };
 
@@ -70,5 +70,21 @@ export const updateProduct = async (req, res) => {
     res.status(200).json({ success: true, data: toProductDTO(product) });
   } catch (error) {
     serverError(res, "updateProduct", error);
+  }
+};
+
+// DELETE /api/products/:id  → HU04 Eliminar
+export const deleteProduct = async (req, res) => {
+  const { id } = req.validated.params;
+  try {
+    const [product] = await sql`
+      DELETE FROM products
+      WHERE id = ${id}
+      RETURNING id, name, price, image, created_at
+    `;
+    if (!product) return notFound(res);
+    res.status(200).json({ success: true, data: toProductDTO(product) });
+  } catch (error) {
+    serverError(res, "deleteProduct", error);
   }
 };

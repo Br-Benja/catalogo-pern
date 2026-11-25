@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Entrega 2 · Alta, edición y baja</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page { size: letter; margin: 0; }
+  :root{
+    --cafe:#843C0C; --verde:#538135; --oro:#E6A800; --azul:#2E74B5; --rojo:#C00000;
+    --tinta:#1a1a1a; --gris:#595959; --borde:#262626;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:#fff; color:var(--tinta);
+    font-family: Arial, "Liberation Sans", Helvetica, sans-serif; font-size:11pt; }
+  .page{ width:8.5in; height:11in; position:relative; overflow:hidden; page-break-after:always; break-after:page; }
+  .page:last-child{ page-break-after:auto; break-after:auto; }
+  /* Marco doble */
+  .page::before{ content:""; position:absolute; inset:0.38in; border:3px solid var(--borde); }
+  .page::after { content:""; position:absolute; inset:0.43in; border:1px solid var(--borde); }
+  .wm{ position:absolute; left:50%; top:50%; width:5.4in; transform:translate(-50%,-46%); opacity:1; z-index:0; }
+  .logo-l{ position:absolute; top:0.75in; left:0.75in; width:1.55in; z-index:2; }
+  .logo-r{ position:absolute; top:0.62in; right:0.75in; width:0.78in; z-index:2; }
+  .foot{ position:absolute; bottom:0.6in; right:0.85in; font-family:Montserrat, Arial, sans-serif; font-weight:700; font-size:9.5pt; z-index:2; }
+  .pnum{ position:absolute; bottom:0.6in; left:0.85in; font-family:Montserrat, Arial, sans-serif; font-size:9pt; color:var(--gris); z-index:2; }
+  .content{ position:absolute; top:1.75in; left:0.95in; right:0.95in; bottom:1.0in; z-index:1; }
+
+  /* Portada */
+  .cover{ text-align:center; font-family:Montserrat, Arial, sans-serif; }
+  .cover .t1{ color:var(--cafe); font-weight:800; font-size:20.5pt; margin:0; letter-spacing:.2px; }
+  .cover .t2{ color:var(--verde); font-weight:800; font-size:14.5pt; margin:4px 0 0; }
+  .cover .t3{ color:var(--verde); font-weight:700; font-size:10pt; margin:6px 0 0; }
+  .cover .big{ font-weight:800; font-size:17pt; margin:0; }
+  .cover .lbl{ font-weight:800; font-size:12.5pt; margin:0; }
+  .cover .val{ font-weight:800; font-size:12.5pt; margin:12px 0 0; }
+  .cover .blk{ margin-top:20px; }
+
+  /* Separador */
+  .sep{ position:absolute; top:46%; left:0; right:0; text-align:center; z-index:2;
+    font-family:Montserrat, Arial, sans-serif; font-weight:800; font-size:46pt; letter-spacing:3px;
+    color:transparent; -webkit-text-stroke:1.6px var(--oro); transform:translateY(-50%); }
+  .sep small{ display:block; font-size:15pt; letter-spacing:1px; -webkit-text-stroke:0; color:var(--azul); margin-top:10px; }
+
+  /* Cuerpo */
+  h1{ color:var(--oro); font-size:15pt; font-weight:700; margin:0 0 12px; text-transform:uppercase; }
+  h2{ color:var(--azul); font-size:12.5pt; font-weight:700; margin:16px 0 8px; text-transform:uppercase; }
+  h3{ font-size:11pt; font-weight:700; margin:12px 0 6px; }
+  p{ margin:0 0 8px; line-height:1.38; text-align:justify; }
+  .it{ font-style:italic; }
+  ul,ol{ margin:0 0 8px; padding-left:20px; line-height:1.38; }
+  li{ margin-bottom:3px; }
+  .box{ border:1px solid #222; background:#fff; padding:7px 10px; text-align:center; color:var(--rojo); font-family:"Latin Modern Math","Cambria Math",Georgia,serif; margin:4px 0 10px; }
+  table{ width:100%; border-collapse:collapse; font-size:9.6pt; margin:4px 0 10px; background:#fff; }
+  th{ background:var(--azul); color:#fff; text-align:left; padding:5px 7px; font-weight:700; }
+  td{ border:1px solid #bfbfbf; padding:5px 7px; vertical-align:top; line-height:1.3; }
+  tr:nth-child(even) td{ background:#f3f7fb; }
+  .ok{ color:var(--verde); font-weight:700; }
+  pre{ background:#fbfbfb; border:1px solid #222; border-left:4px solid var(--azul); padding:7px 9px; margin:4px 0 10px;
+    font-family:Consolas, "Courier New", monospace; font-size:8.3pt; line-height:1.36; white-space:pre-wrap; }
+  pre .c{ color:#6a8759; font-style:italic; } pre .k{ color:#0033b3; font-weight:700; } pre .s{ color:#a31515; }
+  .file{ font-family:Consolas, monospace; font-size:8.6pt; color:var(--gris); margin:8px 0 0; }
+  .term{ background:#1e1e1e; color:#d4d4d4; border:1px solid #000; border-left:4px solid var(--oro); }
+  .term .g{ color:#4ec9b0; } .term .y{ color:#dcdcaa; }
+  .shot{ border:2px dashed var(--azul); background:rgba(46,116,181,.05); height:2.0in; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; color:var(--azul); font-size:9.8pt; font-weight:700; padding:10px; margin:4px 0 6px; }
+  .shot span{ display:block; font-weight:400; color:var(--gris); font-size:8.8pt; margin-top:4px; }
+  .fig{ display:block; width:100%; border:1px solid #222; object-fit:cover; object-position:top; margin:4px 0 4px; background:#fff; }
+  .figs{ display:flex; gap:12px; } .figs > div{ flex:1; }
+  .cap{ font-size:9pt; font-style:italic; text-align:center; color:var(--gris); margin:0 0 10px; }
+
+  /* Diagrama de flujo */
+  .flow{ display:grid; grid-template-columns: 1fr 1fr; gap:7px 14px; margin:6px 0 10px; }
+  .step{ border:1px solid #222; background:#fff; padding:6px 8px 6px 34px; position:relative; font-size:9.4pt; line-height:1.3; min-height:52px; }
+  .step b{ color:var(--azul); }
+  .step .n{ position:absolute; left:7px; top:7px; width:20px; height:20px; border-radius:50%; background:var(--oro); color:#fff; font-weight:700; font-size:9pt; text-align:center; line-height:20px; }
+  .lane{ display:flex; gap:6px; margin:4px 0 12px; align-items:stretch; }
+  .lane div{ flex:1; border:1px solid #222; text-align:center; padding:6px 4px; font-size:9pt; font-weight:700; background:#fff; }
+  .lane .a{ flex:0 0 18px; border:0; background:none; color:var(--oro); font-size:14pt; padding:2px 0; }
+  .lane small{ display:block; font-weight:400; color:var(--gris); font-size:8pt; }
+  .card{ border:1px solid #222; background:#fff; margin:4px 0 10px; }
+  .card .hd{ background:var(--verde); color:#fff; padding:6px 10px; font-weight:700; display:flex; justify-content:space-between; }
+  .card .bd{ padding:8px 10px; font-size:9.6pt; }
+  .pill{ display:inline-block; border-radius:10px; padding:1px 8px; font-size:8.6pt; font-weight:700; background:#fff; color:var(--verde); }
+  .chk li{ list-style:none; margin-left:-18px; }
+
+  /* Recortes de capturas de Postman: región x 360-1410 px de una captura de 1456x819 */
+  .crop{ position:relative; overflow:hidden; border:1px solid #222; margin:4px 0 4px; background:#1e1e1e; }
+  .crop img{ position:absolute; width:138.667%; left:-34.286%; }
+  .crop-tall{ aspect-ratio:1050/565; } .crop-tall img{ top:-15.04%; }
+  .crop-short{ aspect-ratio:1050/515; } .crop-short img{ top:-16.50%; }
+  .content ol li, .content ul li{ font-size:10.5pt; }
+</style>
+</head>
+<body>
+<!-- ============ PORTADA ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content cover" style="top:1.95in">
+    <p class="t1" style="text-align:center">TECNOLÓGICO NACIONAL DE MÉXICO</p>
+    <p class="t2" style="text-align:center">INSTITUTO TECNOLÓGICO DE CELAYA</p>
+    <p class="t3" style="text-align:center">Departamento de Ingeniería en Sistemas y Computación</p>
+    <div style="margin-top:36px">
+      <p class="big" style="text-align:center">ENTREGA 2 · JORNADAS 2 A 4</p>
+      <p class="lbl" style="text-align:center;margin-top:10px">ALTA, EDICIÓN Y BAJA DE PRODUCTOS</p>
+      <p class="val" style="text-align:center;font-weight:600;font-size:10.5pt;margin-top:8px">Validación, pruebas automatizadas y liberaciones incrementales · Catálogo PERN</p>
+    </div>
+    <div class="blk"><p class="lbl" style="text-align:center">ASIGNATURA:</p><p class="val" style="text-align:center">INGENIERÍA DE SOFTWARE</p></div>
+    <div class="blk"><p class="lbl" style="text-align:center">GRUPO: A</p></div>
+    <div class="blk"><p class="lbl" style="text-align:center">ESPECIALIDAD:</p><p class="val" style="text-align:center">INGENIERIA EN SISTEMAS COMPUTACIONALES</p></div>
+    <div class="blk"><p class="lbl" style="text-align:center">DOCENTE:</p><p class="val" style="text-align:center">JOSÉ GUILLERMO FIERRO MENDOZA</p></div>
+    <div class="blk"><p class="lbl" style="text-align:center">INTEGRANTES:</p>
+      <p class="val" style="text-align:center;margin-top:10px">BAUTISTA ROJAS VICTOR BENJAMIN</p>
+      <p class="val" style="text-align:center;margin-top:5px">HERRERA OETTINGHAUS ANDRÉS</p>
+      <p class="val" style="text-align:center;margin-top:5px">OLVERA ÁLVAREZ LEONARDO MANUEL</p>
+      <p class="val" style="text-align:center;margin-top:5px">TAMAYO DE LA CRUZ JUAN DIEGO</p></div>
+  </div>
+
+  
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ SEPARADOR ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="sep">ENTREGA 2<small>Alta · Edición · Baja · Validación · Pruebas · Liberaciones</small></div>
+
+  
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 1. RESUMEN ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h1>1. Alcance de la entrega</h1>
+    <p>La entrega 2 completa el CRUD del catálogo sobre la base liberada en la jornada 1 (<code>u4-j1</code>). Cada historia se construyó en su propia rama, con su pull request, sus pruebas y su etiqueta de liberación. Las tres comparten un mismo <b>DTO de entrada validado con Zod</b>, así que las reglas de los datos viven en un solo lugar.</p>
+
+    <h2>Historias de la entrega</h2>
+    <table>
+      <tr><th style="width:15%">Historia</th><th style="width:27%">Endpoint</th><th>Interfaz en React</th><th style="width:13%">Pruebas</th></tr>
+      <tr><td><b>HU02</b> Alta</td><td><code>POST /api/products</code></td><td>Modal “Agregar producto” con errores por campo</td><td>15</td></tr>
+      <tr><td><b>HU03</b> Editar</td><td><code>GET /api/products/:id</code><br><code>PUT /api/products/:id</code></td><td>Página de producto con el último dato guardado</td><td>13</td></tr>
+      <tr><td><b>HU04</b> Eliminar</td><td><code>DELETE /api/products/:id</code></td><td>Diálogo de confirmación (Cancelar / Eliminar)</td><td>6</td></tr>
+    </table>
+    <p style="margin-top:-4px"><b>Total: 37 pruebas automatizadas</b> (34 nuevas + 3 de HU01), todas pasan.</p>
+
+    <h2>Contrato de la API</h2>
+    <table>
+      <tr><th style="width:31%">Método y ruta</th><th>Éxito</th><th>Errores</th></tr>
+      <tr><td><code>POST /api/products</code></td><td>201 · producto creado</td><td>400 datos inválidos · 500</td></tr>
+      <tr><td><code>GET /api/products/:id</code></td><td>200 · producto</td><td>404 no existe · 400 id inválido</td></tr>
+      <tr><td><code>PUT /api/products/:id</code></td><td>200 · producto guardado</td><td>404 · 400 datos o id inválidos</td></tr>
+      <tr><td><code>DELETE /api/products/:id</code></td><td>200 · producto eliminado</td><td>404 ya no existe · 400 id inválido</td></tr>
+    </table>
+
+    <h2>Archivos nuevos y modificados</h2>
+    <table>
+      <tr><th style="width:42%">Archivo</th><th>Propósito</th></tr>
+      <tr><td><code>backend/src/dto/productDto.js</code></td><td>DTO de entrada (Zod), validación del <code>:id</code> y DTO de salida</td></tr>
+      <tr><td><code>backend/src/middleware/validate.js</code></td><td>Valida body o params; responde 400 con el error de cada campo</td></tr>
+      <tr><td><code>backend/src/controllers/productController.js</code></td><td>createProduct, getProduct, updateProduct, deleteProduct</td></tr>
+      <tr><td><code>frontend/src/</code> ProductForm, AddProductModal, ProductPage, ConfirmDeleteModal</td><td>Formulario compartido (alta y edición), pantalla <code>/product/:id</code> y confirmación de baja</td></tr>
+    </table>
+  </div>
+
+  <div class="pnum">3</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 2. VALIDACIÓN ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h1>2. Validación con Zod y DTO</h1>
+    <p>El <b>DTO</b> (objeto de transferencia de datos) define exactamente qué campos y tipos cruzan la interfaz HTTP. Se valida en Express <b>antes</b> de llegar al controlador: si algo no cumple, la API responde 400 y nunca se ejecuta SQL.</p>
+    <p class="file">backend/src/dto/productDto.js</p>
+<pre><span class="k">export const</span> productInputSchema = z.object({
+  name: z.string().trim()                          <span class="c">// quita espacios al inicio y al final</span>
+    .min(1, <span class="s">"El nombre no puede estar vacío"</span>).max(255),
+  price: z.preprocess(toNumber, z.number()           <span class="c">// acepta 650 o "650", rechaza "", null, "abc"</span>
+    .finite().positive(<span class="s">"El precio debe ser mayor que 0"</span>)),
+  image: z.string().trim().url(<span class="s">"La imagen debe ser una URL válida"</span>).max(500)
+    .refine((u) =&gt; /^https?:\/\//i.test(u), <span class="s">"La URL debe iniciar con http:// o https://"</span>),
+}).strict();                                       <span class="c">// cualquier otro campo (p. ej. id) → 400</span></pre>
+    <p class="file">backend/src/middleware/validate.js</p>
+<pre><span class="k">export const</span> validate = (schema, source = <span class="s">"body"</span>) =&gt; (req, res, next) =&gt; {
+  <span class="k">const</span> result = schema.safeParse(req[source] ?? {});
+  <span class="k">if</span> (!result.success) {
+    <span class="c">// { "price": "El precio debe ser mayor que 0", ... }  un mensaje por campo</span>
+    <span class="k">return</span> res.status(<span class="s">400</span>).json({ success: <span class="k">false</span>, message: <span class="s">"Datos inválidos"</span>, errors });
+  }
+  req.validated = { ...req.validated, [source]: result.data };   <span class="c">// datos ya limpios</span>
+  next();
+};</pre>
+    <p class="file">backend/src/routes/productRoutes.js</p>
+<pre>router.post(<span class="s">"/"</span>, validate(productInputSchema), createProduct);
+router.get(<span class="s">"/:id"</span>, validate(idParamSchema, <span class="s">"params"</span>), getProduct);
+router.put(<span class="s">"/:id"</span>, validate(idParamSchema, <span class="s">"params"</span>), validate(productInputSchema), updateProduct);
+router.delete(<span class="s">"/:id"</span>, validate(idParamSchema, <span class="s">"params"</span>), deleteProduct);</pre>
+
+    <h2>Defensa en dos capas</h2>
+    <table>
+      <tr><th style="width:24%">Capa</th><th>Qué protege</th></tr>
+      <tr><td>Zod (Express)</td><td>Tipos, nombre vacío, precio ≤ 0, URL inválida, campos extra, id no numérico. Da mensajes claros por campo.</td></tr>
+      <tr><td>PostgreSQL</td><td><code>CHECK (price &gt; 0)</code> y <code>CHECK (length(trim(name)) &gt; 0)</code> del esquema: última barrera si algo saltara la API.</td></tr>
+      <tr><td>Consultas parametrizadas</td><td>Los valores viajan como <code>$1, $2…</code> en <code>sql`...`</code>; las pruebas verifican que nunca se concatenan.</td></tr>
+    </table>
+    <p>El formulario de React usa <code>noValidate</code> a propósito: la fuente de verdad es la API y la vista muestra sus mensajes debajo de cada campo (Fig. 1).</p>
+  </div>
+
+  <div class="pnum">4</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 3. HU02 ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h1>3. HU02 · Dar de alta un producto</h1>
+    <div class="box">Como <b>responsable del catálogo</b>, quiero registrar un producto para que aparezca en la lista.</div>
+    <table>
+      <tr><th style="width:62%">Criterio de aceptación</th><th>Evidencia</th><th style="width:12%">Estado</th></tr>
+      <tr><td>Una alta válida responde 201, aparece en la lista y persiste al recargar</td><td>Fig. 2 y 3 · prueba “alta válida”</td><td class="ok">Cumple</td></tr>
+      <tr><td>Un precio inválido enviado desde Postman responde 400 y no crea un registro</td><td>Fig. 4 · 5 pruebas de precio</td><td class="ok">Cumple</td></tr>
+    </table>
+<pre><span class="k">const</span> [product] = <span class="k">await</span> sql`
+  INSERT INTO products (name, price, image)
+  VALUES (${name}, ${price}, ${image})            <span class="c">// parámetros, no concatenación</span>
+  RETURNING id, name, price, image, created_at`;
+res.status(<span class="s">201</span>).json({ success: <span class="k">true</span>, data: toProductDTO(product) });</pre>
+    <div class="figs">
+      <div><img class="fig" style="height:2.95in" src="assets/hu02_react_errores.jpg" alt="">
+        <p class="cap">Figura 1. Datos inválidos: la API responde 400 y React muestra el error de cada campo.</p></div>
+      <div><img class="fig" style="height:2.95in" src="assets/hu02_react_alta.jpg" alt="">
+        <p class="cap">Figura 2. Tras registrar y <b>recargar</b>, “Teclado mecánico RGB” sigue en el catálogo.</p></div>
+    </div>
+  </div>
+
+  <div class="pnum">5</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h2 style="margin-top:0">HU02 · Prueba manual en Postman</h2>
+    <div class="crop crop-tall"><img src="assets/pm_post_201.jpg" alt=""></div>
+    <p class="cap">Figura 3. <code>POST /api/products</code> → <b>201 Created</b>. El nombre se envió con espacios y se guardó limpio.</p>
+    <div class="crop crop-short"><img src="assets/pm_post_400.jpg" alt=""></div>
+    <p class="cap">Figura 4. Precio −50 → <b>400 Bad Request</b> con <code>errors.price</code>; no se creó ningún registro.</p>
+  </div>
+
+  <div class="pnum">6</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 4. HU03 ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h1>4. HU03 · Editar un producto</h1>
+    <div class="box">Como <b>responsable del catálogo</b>, quiero cambiar los datos de un producto para mantener la información vigente.</div>
+    <table>
+      <tr><th style="width:62%">Criterio de aceptación</th><th>Evidencia</th><th style="width:12%">Estado</th></tr>
+      <tr><td>Una edición válida responde 200 y el cambio persiste al recargar</td><td>Fig. 5, 7 y 9</td><td class="ok">Cumple</td></tr>
+      <tr><td>Un ID inexistente recibe 404</td><td>Fig. 8 y 10 · 2 pruebas</td><td class="ok">Cumple</td></tr>
+      <tr><td>Si falla la edición, la vista muestra el error y conserva el último dato confirmado</td><td>Fig. 6 y 7</td><td class="ok">Cumple</td></tr>
+    </table>
+    <p class="file">frontend/src/store/useProductStore.js · updateProduct</p>
+<pre><span class="k">try</span> {
+  <span class="k">const</span> res = <span class="k">await</span> api.put(`/api/products/${id}`, get().editForm);
+  <span class="c">// solo con 200 cambian el dato confirmado y el catálogo</span>
+  set((s) =&gt; ({ currentProduct: res.data.data,
+                products: s.products.map((p) =&gt; (p.id === saved.id ? saved : p)) }));
+} <span class="k">catch</span> (err) {
+  <span class="c">// si falla, currentProduct y products se quedan como estaban</span>
+  set({ editErrors: fieldErrors });
+}</pre>
+    <div class="figs">
+      <div><img class="fig" style="height:2.15in" src="assets/hu03_react_editado.jpg" alt="">
+        <p class="cap">Figura 5. Edición válida: “Cambios guardados” y la tarjeta izquierda se actualiza.</p></div>
+      <div><img class="fig" style="height:2.15in" src="assets/hu03_react_error.jpg" alt="">
+        <p class="cap">Figura 6. Precio 0 → error; la tarjeta conserva “RGB Pro · $1,499.00”.</p></div>
+    </div>
+  </div>
+
+  <div class="pnum">7</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h2 style="margin-top:0">HU03 · Persistencia y producto inexistente</h2>
+    <img class="fig" style="height:3.6in" src="assets/hu03_react_catalogo.jpg" alt="">
+    <p class="cap">Figura 7. Catálogo después de <b>recargar</b>: queda la edición válida (RGB Pro, $1,499.00) y no la fallida (“Teclado edición fallida”, $0), que nunca llegó a la base.</p>
+    <img class="fig" style="height:1.25in" src="assets/hu03_react_404.jpg" alt="">
+    <p class="cap">Figura 8. <code>/product/999</code>: la API responde 404 y la vista muestra “Producto no encontrado” con la opción de volver al catálogo.</p>
+    <p>La pantalla de edición separa el <b>último dato confirmado</b> (tarjeta izquierda, <code>currentProduct</code>) de lo que el usuario escribe (<code>editForm</code>). Mientras la API no responda 200, ni la tarjeta ni el catálogo cambian, aunque el formulario tenga otros valores.</p>
+  </div>
+
+  <div class="pnum">8</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h2 style="margin-top:0">HU03 · Prueba manual en Postman</h2>
+    <div class="crop crop-tall"><img src="assets/pm_put_200.jpg" alt=""></div>
+    <p class="cap">Figura 9. <code>PUT /api/products/5</code> con el formulario completo → <b>200 OK</b>.</p>
+    <div class="crop crop-short"><img src="assets/pm_put_404.jpg" alt=""></div>
+    <p class="cap">Figura 10. <code>PUT /api/products/9999</code> → <b>404 Not Found</b>.</p>
+  </div>
+
+  <div class="pnum">9</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 5. HU04 ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h1>5. HU04 · Eliminar un producto</h1>
+    <div class="box">Como <b>responsable del catálogo</b>, quiero retirar un producto para que deje de aparecer.</div>
+    <table>
+      <tr><th style="width:62%">Criterio de aceptación</th><th>Evidencia</th><th style="width:12%">Estado</th></tr>
+      <tr><td>Cancelar conserva el producto</td><td>Fig. 11 y 12</td><td class="ok">Cumple</td></tr>
+      <tr><td>Confirmar devuelve 200 y lo retira de la lista, también después de recargar</td><td>Fig. 13 y 14</td><td class="ok">Cumple</td></tr>
+      <tr><td>Si el ID ya no existe, la API devuelve 404</td><td>Fig. 15 · prueba automatizada</td><td class="ok">Cumple</td></tr>
+    </table>
+<pre><span class="k">const</span> [product] = <span class="k">await</span> sql`DELETE FROM products WHERE id = ${id} RETURNING ...`;
+<span class="k">if</span> (!product) <span class="k">return</span> notFound(res);           <span class="c">// 404: no había nada que borrar</span>
+res.status(<span class="s">200</span>).json({ success: <span class="k">true</span>, data: toProductDTO(product) });</pre>
+    <div class="figs">
+      <div><img class="fig" style="height:2.05in" src="assets/hu04_react_confirmar.jpg" alt="">
+        <p class="cap">Figura 11. Confirmación antes de eliminar “Mouse inalámbrico”.</p></div>
+      <div><img class="fig" style="height:2.05in" src="assets/hu04_react_cancelado.jpg" alt="">
+        <p class="cap">Figura 12. Con <b>Cancelar</b> no se envía petición y el producto sigue.</p></div>
+    </div>
+    <div class="figs">
+      <div style="flex:0 0 49%"><img class="fig" style="height:2.05in" src="assets/hu04_react_eliminado.jpg" alt="">
+        <p class="cap">Figura 13. Con <b>Eliminar</b>: “Mouse inalámbrico eliminado” y sale de la lista.</p></div>
+      <div><p class="cap" style="text-align:left;margin-top:24px">Después de recargar, <code>GET /api/products/4</code> respondió <b>404</b>: el producto ya no existe en PostgreSQL.</p></div>
+    </div>
+  </div>
+
+  <div class="pnum">10</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h2 style="margin-top:0">HU04 · Prueba manual en Postman</h2>
+    <div class="crop crop-tall"><img src="assets/pm_delete_200.jpg" alt=""></div>
+    <p class="cap">Figura 14. <code>DELETE /api/products/5</code> → <b>200 OK</b> con el producto eliminado.</p>
+    <div class="crop crop-short"><img src="assets/pm_delete_404.jpg" alt=""></div>
+    <p class="cap">Figura 15. El mismo DELETE otra vez → <b>404 Not Found</b>: el ID ya no existe.</p>
+  </div>
+
+  <div class="pnum">11</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 6. PRUEBAS ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h1>6. Pruebas automatizadas</h1>
+    <p>Las pruebas usan <b>Jest</b> y <b>Supertest</b> contra la aplicación Express real. Solo se sustituye la conexión a Neon por un doble de prueba (<code>jest.unstable_mockModule</code>), así se controla qué devuelve la base y se verifica qué SQL recibe.</p>
+    <table>
+      <tr><th style="width:30%">Suite</th><th style="width:9%">Casos</th><th>Qué cubre</th></tr>
+      <tr><td><code>products.get.test.js</code></td><td>3</td><td>HU01: lista con datos, lista vacía, error 500</td></tr>
+      <tr><td><code>products.post.test.js</code></td><td>15</td><td>201; nombre recortado; consulta parametrizada; precio negativo, cero, texto, vacío y nulo; nombre en blanco; URL inválida y ftp; campos faltantes y extra; JSON mal formado; 500</td></tr>
+      <tr><td><code>products.put.test.js</code></td><td>13</td><td>GET por id 200/404; id inválido (abc, 0, −3, 1.5); PUT 200; UPDATE parametrizado; 404; 400 por datos o formulario incompleto; 500</td></tr>
+      <tr><td><code>products.delete.test.js</code></td><td>6</td><td>200; DELETE parametrizado; 404; borrar dos veces (200 y 404); id inválido; 500</td></tr>
+    </table>
+    <p class="file">cd backend &amp;&amp; npm test -- --verbose (extracto)</p>
+<pre class="term"><span class="g">PASS</span> tests/products.post.test.js
+  HU02 · POST /api/products
+    <span class="g">√</span> alta válida responde 201 y devuelve el producto creado
+    <span class="g">√</span> usa consulta parametrizada y guarda el nombre sin espacios
+    <span class="g">√</span> precio negativo responde 400 y no crea registro
+    <span class="g">√</span> campos fuera del DTO responden 400   <span class="y">… 15 de 15</span>
+<span class="g">PASS</span> tests/products.put.test.js
+  HU03 · PUT /api/products/:id
+    <span class="g">√</span> edición válida responde 200 con los datos guardados
+    <span class="g">√</span> ID inexistente responde 404
+    <span class="g">√</span> datos inválidos responden 400 y no se actualiza   <span class="y">… 13 de 13</span>
+<span class="g">PASS</span> tests/products.delete.test.js
+  HU04 · DELETE /api/products/:id
+    <span class="g">√</span> borrar dos veces el mismo producto: 200 y después 404
+    <span class="g">√</span> ID que ya no existe responde 404   <span class="y">… 6 de 6</span>
+<span class="g">PASS</span> tests/products.get.test.js   <span class="y">… 3 de 3</span>
+
+<span class="y">Test Suites:</span> 4 passed, 4 total
+<span class="y">Tests:</span>       37 passed, 37 total</pre>
+    <p>La salida completa está en <code>docs/entrega2/jest_salida.txt</code> del repositorio.</p>
+  </div>
+
+  <div class="pnum">12</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 7. LIBERACIONES ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h1>7. Liberaciones incrementales</h1>
+    <p>Cada historia se libera por separado. Como HU03 depende de HU02 y HU04 de HU03, sus ramas se apilan: cada pull request apunta a la rama anterior y, cuando esa se integra, GitHub lo cambia a <code>main</code>. Así cada PR muestra solo los cambios de su historia.</p>
+    <div class="lane" style="margin-top:8px">
+      <div>main<small>u4-j1</small></div><div class="a">→</div>
+      <div>HU02<small>PR #8 → u4-j2</small></div><div class="a">→</div>
+      <div>HU03<small>PR #9 → u4-j3</small></div><div class="a">→</div>
+      <div>HU04<small>PR #10 → u4-j4</small></div>
+    </div>
+    <table>
+      <tr><th style="width:12%">Historia</th><th style="width:31%">Rama</th><th style="width:11%">PR</th><th style="width:11%">Issue</th><th style="width:12%">Etiqueta</th><th>Estado</th></tr>
+      <tr><td>HU02</td><td><code>feature/HU02-dar-de-alta</code></td><td>#8</td><td>#3</td><td><code>u4-j2</code></td><td>En revisión</td></tr>
+      <tr><td>HU03</td><td><code>feature/HU03-editar</code></td><td>#9</td><td>#4</td><td><code>u4-j3</code></td><td>En revisión</td></tr>
+      <tr><td>HU04</td><td><code>feature/HU04-eliminar</code></td><td>#10</td><td>#5</td><td><code>u4-j4</code></td><td>En revisión</td></tr>
+    </table>
+    <h2>Rutina aplicada en cada historia</h2>
+    <ol>
+      <li>Tarjeta en <b>En desarrollo</b> y rama <code>feature/HUxx-…</code> desde la anterior.</li>
+      <li>Commits vinculados a la historia (<code>feat(HU02): …</code>) con sus pruebas.</li>
+      <li>Pull request con criterios de aceptación y <code>Closes #n</code>; tarjeta a <b>En revisión</b>.</li>
+      <li>Otro integrante revisa y aprueba en GitHub.</li>
+      <li>Se integra en <code>main</code>, se etiqueta <code>u4-jN</code> y la tarjeta pasa sola a <b>Liberada</b>.</li>
+    </ol>
+    <img class="fig" style="height:2.25in" src="assets/tablero.jpg" alt="Tablero">
+    <p class="cap">Figura 16. Tablero del equipo: HU02, HU03 y HU04 en “En revisión” (PR #8, #9 y #10); HU01 en “Liberada”; HU05 e INV01 en “Pendiente”.</p>
+  </div>
+
+  <div class="pnum">13</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+<!-- ============ 8. CIERRE ============ -->
+
+<section class="page">
+  <img class="wm" src="assets/marca_agua.png" alt="">
+  <img class="logo-l" src="assets/logo_tecnm.png" alt="TecNM">
+  <img class="logo-r" src="assets/logo_itc.png" alt="ITC">
+  
+  <div class="content">
+    <h1>8. Resultado y siguiente paso</h1>
+    <h2>Resultado</h2>
+    <p>El catálogo ya tiene el CRUD completo: consultar, dar de alta, editar y eliminar, con los datos en PostgreSQL (Neon). La API rechaza la entrada inválida con mensajes por campo antes de tocar la base, distingue 400, 404 y 500, y la vista de React refleja cada caso sin perder el último dato confirmado. Todos los criterios de HU02, HU03 y HU04 se comprobaron de forma manual (React y Postman) y automatizada (37 pruebas).</p>
+    <h2>Cómo reproducir</h2>
+    <ol>
+      <li>Preparar la base: <code>node db/run-sql.js db/schema.sql</code> y <code>db/seed.sql</code> (desde <code>backend/</code>).</li>
+      <li><code>cd backend &amp;&amp; npm install &amp;&amp; npm run dev</code> · <code>cd frontend &amp;&amp; npm install &amp;&amp; npm run dev</code>.</li>
+      <li>En <code>http://localhost:5173</code>: <b>Agregar producto</b>, <b>Editar</b> y <b>Eliminar</b> en cada tarjeta.</li>
+      <li>Pruebas: <code>cd backend &amp;&amp; npm test</code>.</li>
+    </ol>
+    <h2>Siguiente historia: HU05 · Usar el catálogo publicado</h2>
+    <p>La jornada 5 publica la aplicación en Render: compilación de React, variables de entorno del despliegue y URL de la API. Si la URL queda abierta sin login, solo se habilitará la consulta pública, como pide la práctica; el diseño del acceso por roles se documentará en INV01.</p>
+    <h2>Enlaces</h2>
+    <ul>
+      <li>Repositorio: github.com/Br-Benja/catalogo-pern</li>
+      <li>Tablero: github.com/users/Br-Benja/projects/1</li>
+      <li>Pull requests: #8 (HU02), #9 (HU03), #10 (HU04)</li>
+    </ul>
+  </div>
+
+  <div class="pnum">14</div>
+  <div class="foot">AGOSTO-DICIEMBRE 2026.</div>
+</section>
+
+</body>
+</html>

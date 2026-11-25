@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
+import { useProductStore } from "../store/useProductStore.js";
 
 const mxn = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" });
 
 export default function ProductCard({ product }) {
+  const askDelete = useProductStore((s) => s.askDelete);
+
   return (
     <article className="card bg-base-100 shadow-md">
       <figure className="h-48 bg-base-300">
@@ -16,6 +19,9 @@ export default function ProductCard({ product }) {
           <Link to={`/product/${product.id}`} className="btn btn-sm btn-outline btn-primary">
             <Pencil className="size-4" /> Editar
           </Link>
+          <button className="btn btn-sm btn-outline btn-error" onClick={() => askDelete(product)}>
+            <Trash2 className="size-4" /> Eliminar
+          </button>
         </div>
       </div>
     </article>
