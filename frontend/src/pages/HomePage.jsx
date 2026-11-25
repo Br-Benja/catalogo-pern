@@ -1,6 +1,8 @@
 import { useEffect } from "react";
+import { PlusCircle, RefreshCw } from "lucide-react";
 import { useProductStore } from "../store/useProductStore.js";
 import ProductCard from "../components/ProductCard.jsx";
+import AddProductModal, { ADD_MODAL_ID } from "../components/AddProductModal.jsx";
 
 export default function HomePage() {
   const { products, loading, error, fetchProducts } = useProductStore();
@@ -11,7 +13,18 @@ export default function HomePage() {
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Productos disponibles</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <h1 className="text-2xl font-bold">Productos disponibles</h1>
+        <div className="flex gap-2">
+          <button className="btn btn-ghost btn-circle" onClick={fetchProducts} aria-label="Recargar">
+            <RefreshCw className="size-5" />
+          </button>
+          <button className="btn btn-primary" onClick={() => document.getElementById(ADD_MODAL_ID)?.showModal()}>
+            <PlusCircle className="size-5" />
+            Agregar producto
+          </button>
+        </div>
+      </div>
 
       {error && <div className="alert alert-error mb-6">{error}</div>}
 
@@ -31,6 +44,8 @@ export default function HomePage() {
           ))}
         </div>
       )}
+
+      <AddProductModal />
     </main>
   );
 }
