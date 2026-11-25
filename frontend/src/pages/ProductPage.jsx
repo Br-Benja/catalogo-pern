@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useProductStore } from "../store/useProductStore.js";
 import ProductForm from "../components/ProductForm.jsx";
+import ConfirmDeleteModal from "../components/ConfirmDeleteModal.jsx";
 
 const mxn = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" });
 
@@ -11,8 +12,9 @@ export default function ProductPage() {
   const { id } = useParams();
   const {
     currentProduct, productLoading, productError,
-    editForm, editErrors, saving, setEditForm, fetchProduct, updateProduct,
+    editForm, editErrors, saving, setEditForm, fetchProduct, updateProduct, askDelete,
   } = useProductStore();
+  const navigate = useNavigate();
   const [saveError, setSaveError] = useState(null);
 
   useEffect(() => {
@@ -86,10 +88,15 @@ export default function ProductPage() {
               onSubmit={handleSave}
               submitting={saving}
               submitLabel="Guardar cambios"
-            />
+            >
+              <button type="button" className="btn btn-outline btn-error" onClick={() => askDelete(currentProduct)}>
+                <Trash2 className="size-4" /> Eliminar
+              </button>
+            </ProductForm>
           </div>
         </section>
       </div>
+      <ConfirmDeleteModal onDeleted={() => navigate("/")} />
     </main>
   );
 }

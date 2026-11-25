@@ -92,6 +92,34 @@ export const useProductStore = create((set, get) => ({
     }
   },
 
+  // Baja (HU04): producto que espera confirmación
+  toDelete: null,
+  deleting: false,
+  askDelete: (product) => set({ toDelete: product }),
+  cancelDelete: () => set({ toDelete: null }),
+
+  // DELETE /api/products/:id → devuelve { ok, message }
+  deleteProduct: async () => {
+    const product = get().toDelete;
+    if (!product) return { ok: false, message: "Nada que eliminar" };
+    set({ deleting: true });
+    try {
+      await api.delete(`/api/products/${product.id}`);
+      set((state) => ({ products: state.products.filter((p) => p.id !== product.id), toDelete: null }));
+      return { ok: true, message: `“${product.name}” eliminado` };
+    } catch (err) {
+      const { status, message } = parseApiError(err, "No se pudo eliminar el producto");
+      if (status === 404) {
+        // Ya no existía: se quita de la vista para que el catálogo coincida con la base
+        set((state) => ({ products: state.products.filter((p) => p.id !== product.id), toDelete: null }));
+        return { ok: false, message: "El producto ya no existía" };
+      }
+      return { ok: false, message };
+    } finally {
+      set({ deleting: false });
+    }
+  },
+
   // POST /api/products → devuelve { ok, message }
   addProduct: async () => {
     set({ submitting: true, formErrors: {} });
