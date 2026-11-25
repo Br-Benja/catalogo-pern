@@ -2,5 +2,5 @@
   "EST_HU02": "En revisión",
   "EST_HU03": "En revisión",
   "EST_HU04": "En revisión",
-  "CAP_TABLERO": "Tablero del equipo: HU02, HU03 y HU04 en “En revisión” con sus PR enlazados; HU01 en “Liberada”."
+  "CAP_TABLERO": "Tablero al abrir los PR: HU02 en “En desarrollo” con el PR #8 enlazado; HU03 y HU04 aún en “Pendiente”; HU01 en “Liberada”."
 }
