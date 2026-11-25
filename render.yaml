@@ -1,0 +1,20 @@
+# Blueprint de Render (HU05): un solo servicio web.
+# Express sirve la API en /api y la compilación de React en el resto de rutas.
+services:
+  - type: web
+    name: catalogo-pern
+    runtime: node
+    plan: free
+    branch: main
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/products
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        sync: false # se escribe a mano en el panel de Render (es secreta)
+      - key: JWT_SECRET
+        generateValue: true # Render genera un valor aleatorio
